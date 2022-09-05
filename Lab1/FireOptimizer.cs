@@ -12,10 +12,19 @@ namespace Lab1
     /// <typeparam name="T">Тип элементов массива</typeparam>
     public class FireOptimizer<T>
     {
+        /// <summary>
+        /// Размер решения
+        /// </summary>
         public int N { get; }
 
+        /// <summary>
+        /// Решение
+        /// </summary>
         public T[] Solution { get; set; }
 
+        /// <summary>
+        /// Текущее значение температуры
+        /// </summary>
         public float Temperature { get; set; }
 
         private float MaxTemperature;
@@ -52,6 +61,11 @@ namespace Lab1
             }
         }
 
+        /// <summary>
+        /// Инициализация начального состояния
+        /// </summary>
+        /// <param name="initSolution">Массив, которым инициализируется состояние</param>
+        /// <exception cref="Exception"></exception>
         public void Initialize(T[] initSolution)
         {
             if (initSolution.Length != N)
@@ -80,19 +94,36 @@ namespace Lab1
             return Solution;
         }
 
-        //TODO: понять, как определять, было ли помещено значение в i-й элемент массива res
+        /// <summary>
+        /// Получить новое решение случайным перемешиванием текущего
+        /// </summary>
+        /// <returns>Новое решение</returns>
         private T[] ShuffleSolution()
         {
             var res = new T[N];
+            var indexes = new int[N];
+            for (int i = 0; i < N; i++)
+            {
+                indexes[i] = i;
+                res[i] = Solution[i];
+            }
             for(int i = 0; i < N; i++)
             {
-                int index = _rnd.Next(N);
-                while (res[index] != null) index = _rnd.Next(N); //вот тут
-                res[index] = Solution[i];
+                var curLen = N - i;
+                int randInd = _rnd.Next(curLen);
+                T temp = res[randInd];
+                for (int j = randInd; j < curLen - 1; j++)
+                    res[j] = res[j + 1];
+                res[curLen - 1] = temp;
             }
             return res;
         }
 
+        /// <summary>
+        /// Выбрать новое текущее решение
+        /// </summary>
+        /// <param name="countEnergy">Функция подсчёта энергии решения</param>
+        /// <param name="newSolution">Новое решение</param>
         private void ChooseSolution(Func<T[], float> countEnergy, T[] newSolution)
         {
             var currEnergy = countEnergy(Solution);

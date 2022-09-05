@@ -1,25 +1,36 @@
 namespace Lab1
 {
     using System;
-    using System.Drawing;
     using System.Windows.Forms;
+
     public partial class Form1 : Form
     {
-        public int N { get; set; }
+        public int[] Solution { get; set; } = new int[0];
 
-        public float Alpha { get; set; } = 0.98f;
+        public bool Initialized { get; private set; } = false;
+
+        public float Energy
+        {
+            get { return float.Parse(energyLbl.Text); }
+            set { energyLbl.Text = value.ToString(); }
+        }
+
+        private FireParameters _params;
+
+        private FieldDrawer _drawer;
 
         public Form1()
         {
             InitializeComponent();
+            _drawer = new FieldDrawer(pictureBox1);
+            _params = GetCurrParams();
         }
 
-        private int[] Initialize()
+        private void Initialize()
         {
-            int[] res = new int[N];
-            for (int i = 0; i < N; i++)
-                res[i] = i;
-            return res;
+            Solution = new int[_params.N];
+            for (int i = 0; i < _params.N; i++) Solution[i] = i;
+            Initialized = true;
         }
 
         private float CountEnergyOf(int[] arr, int i)
@@ -43,77 +54,43 @@ namespace Lab1
 
         private float TemperatureFunc(float t)
         {
-            return t * Alpha;
+            return t * _params.Alpha;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void initBtn_Click(object sender, EventArgs e)
         {
-            N = (int)sizeNud.Value;
-            var arr = Initialize();
-            RedrawField(arr);
-        }
-
-        private void RedrawField(int[] solution)
-        {
-            int n = solution.Length;
-            var cellWidth = pictureBox1.Width / (float)n;
-            Graphics g = pictureBox1.CreateGraphics();
-            DrawGrid(g, cellWidth, n);
-
-            SolidBrush sb = new SolidBrush(Color.Black);
-            Pen blackLnPen = new Pen(sb, 3);
-
-            
-            for (int i = 0; i < solution.Length; i++)
-            {
-                DrawQueen(g, i, solution[i], cellWidth);
-            }
-
-        }
-
-        private void DrawGrid(Graphics g, float cellWidth, int n)
-        {
-            SolidBrush sb = new SolidBrush(Color.Black);
-            Pen blackLnPen = new Pen(sb, 3);
-
-            for (int i = 0; i < n + 1; i++)
-            {
-                int curPos = (int)(cellWidth * i);
-
-                Point p1 = new Point(curPos, 0);
-                Point p2 = new Point(curPos, pictureBox1.Height);
-                g.DrawLine(blackLnPen, p1, p2);
-
-                p1 = new Point(0, curPos);
-                p2 = new Point(pictureBox1.Width, curPos);
-                g.DrawLine(blackLnPen, p1, p2);
-            }
-        }
-
-        private void DrawQueen(Graphics g, int col, int row, float cellWidth)
-        {
-            SolidBrush sb = new SolidBrush(Color.Black);
-            Pen blackLnPen = new Pen(sb, 3);
-            g.DrawEllipse(
-                blackLnPen,
-                col * cellWidth,
-                row * cellWidth,
-                cellWidth,
-                cellWidth);
+            _params = GetCurrParams();
+            Initialize();
+            _drawer.DrawField(Solution);
         }
 
         private void evalBtn_Click(object sender, EventArgs e)
         {
-            N = (int)sizeNud.Value;
-            Alpha = (float)alphaNud.Value;
-            var temp = (float)tempNud.Value;
+            _params = GetCurrParams();
+            if(!Initialized) Initialize();
 
-            var solution = Initialize();
+            var optimizer = new FireOptimizer<int>(_params.N, _params.MaxTemperature, _params.MinTemperature, _params.Steps);
+            optimizer.Initialize(Solution);
+            Solution = optimizer.GetSolution(CountFullEnergy, TemperatureFunc);
+            Energy = CountFullEnergy(Solution);
+            _drawer.DrawField(Solution);
+        }
 
-            var optimizer = new FireOptimizer<int>(N, temp, 0.5f, 100);
-            optimizer.Initialize(solution);
-            solution = optimizer.GetSolution(CountFullEnergy, TemperatureFunc);
-            RedrawField(solution);
+        private FireParameters GetCurrParams()
+        {
+            return new FireParameters
+            {
+                Alpha = (float)alphaNud.Value,
+                MaxTemperature = (float)tempNud.Value,
+                MinTemperature = (float)minTempNud.Value,
+                N = (int)sizeNud.Value,
+                Steps = (int)stepsNud.Value
+            };
+        }
+
+        private void sizeNud_ValueChanged(object sender, EventArgs e)
+        {
+            Initialized = false;
         }
     }
 }
