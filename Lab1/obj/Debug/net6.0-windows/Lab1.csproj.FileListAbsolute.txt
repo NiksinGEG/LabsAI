@@ -1,0 +1,17 @@
+C:\Users\mikle\source\repos\LabsAI\Lab1\bin\Debug\net6.0-windows\Lab1.exe
+C:\Users\mikle\source\repos\LabsAI\Lab1\bin\Debug\net6.0-windows\Lab1.deps.json
+C:\Users\mikle\source\repos\LabsAI\Lab1\bin\Debug\net6.0-windows\Lab1.runtimeconfig.json
+C:\Users\mikle\source\repos\LabsAI\Lab1\bin\Debug\net6.0-windows\Lab1.dll
+C:\Users\mikle\source\repos\LabsAI\Lab1\bin\Debug\net6.0-windows\Lab1.pdb
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.csproj.AssemblyReference.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.Form1.resources
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.csproj.GenerateResource.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.AssemblyInfoInputs.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.AssemblyInfo.cs
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.csproj.CoreCompileInputs.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.dll
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\refint\Lab1.dll
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.pdb
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.genruntimeconfig.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\ref\Lab1.dll
