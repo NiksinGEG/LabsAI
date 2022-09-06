@@ -15,3 +15,4 @@ C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\refint\Lab1.dll
 C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.pdb
 C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.genruntimeconfig.cache
 C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\ref\Lab1.dll
+C:\Users\mikle\source\repos\LabsAI\Lab1\obj\Debug\net6.0-windows\Lab1.AnalisForm.resources

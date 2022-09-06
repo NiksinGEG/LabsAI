@@ -37,8 +37,7 @@
             this.tempNud = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.alphaNud = new System.Windows.Forms.NumericUpDown();
-            this.graphicsBtn = new System.Windows.Forms.Button();
-            this.initBtn = new System.Windows.Forms.Button();
+            this.analisBtn = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.energyLbl = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -69,7 +68,6 @@
             0,
             0,
             0});
-            this.sizeNud.ValueChanged += new System.EventHandler(this.sizeNud_ValueChanged);
             // 
             // label1
             // 
@@ -163,24 +161,15 @@
             0,
             131072});
             // 
-            // graphicsBtn
+            // analisBtn
             // 
-            this.graphicsBtn.Location = new System.Drawing.Point(418, 479);
-            this.graphicsBtn.Name = "graphicsBtn";
-            this.graphicsBtn.Size = new System.Drawing.Size(152, 23);
-            this.graphicsBtn.TabIndex = 9;
-            this.graphicsBtn.Text = "Графики...";
-            this.graphicsBtn.UseVisualStyleBackColor = true;
-            // 
-            // initBtn
-            // 
-            this.initBtn.Location = new System.Drawing.Point(418, 508);
-            this.initBtn.Name = "initBtn";
-            this.initBtn.Size = new System.Drawing.Size(152, 23);
-            this.initBtn.TabIndex = 10;
-            this.initBtn.Text = "Инициализация";
-            this.initBtn.UseVisualStyleBackColor = true;
-            this.initBtn.Click += new System.EventHandler(this.initBtn_Click);
+            this.analisBtn.Location = new System.Drawing.Point(418, 508);
+            this.analisBtn.Name = "analisBtn";
+            this.analisBtn.Size = new System.Drawing.Size(152, 23);
+            this.analisBtn.TabIndex = 9;
+            this.analisBtn.Text = "Менеджер анализа";
+            this.analisBtn.UseVisualStyleBackColor = true;
+            this.analisBtn.Click += new System.EventHandler(this.analisBtn_Click);
             // 
             // label5
             // 
@@ -262,8 +251,7 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.energyLbl);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.initBtn);
-            this.Controls.Add(this.graphicsBtn);
+            this.Controls.Add(this.analisBtn);
             this.Controls.Add(this.alphaNud);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tempNud);
@@ -296,8 +284,7 @@
         private NumericUpDown tempNud;
         private Label label4;
         private NumericUpDown alphaNud;
-        private Button graphicsBtn;
-        private Button initBtn;
+        private Button analisBtn;
         private Label label5;
         private Label energyLbl;
         private Label label6;

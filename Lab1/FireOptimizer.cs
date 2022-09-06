@@ -10,7 +10,7 @@ namespace Lab1
     /// Оптимизатор методом отжига
     /// </summary>
     /// <typeparam name="T">Тип элементов массива</typeparam>
-    public class FireOptimizer<T>
+    public abstract class FireOptimizer<T>
     {
         /// <summary>
         /// Размер решения
@@ -22,10 +22,20 @@ namespace Lab1
         /// </summary>
         public T[] Solution { get; set; }
 
+
+        private float _temperature;
         /// <summary>
         /// Текущее значение температуры
         /// </summary>
-        public float Temperature { get; set; }
+        public float Temperature
+        {
+            get { return _temperature; }
+            set
+            {
+                _temperature = value;
+                OnTemperatureChanges?.Invoke(this, new EventArgs());
+            }
+        }
 
         private float MaxTemperature;
 
@@ -35,14 +45,18 @@ namespace Lab1
 
         private Random _rnd;
 
+        public event EventHandler OnTemperatureChanges;// { get; set; }
+
+        public event EventHandler OnBadSolutionChoses;// { get; set; }
+
         /// <summary>
         /// Конструктор оптимизатора
         /// </summary>
         /// <param name="n">Размерность массива решения</param>
         public FireOptimizer(int n, float temperature, float minTemperature, int steps)
         {
-            this.N = n;
-            this.Solution = new T[n];
+            N = n;
+            Solution = new T[n];
             MaxTemperature = temperature;
             MinTemperature = minTemperature;
             Steps = steps;
@@ -73,13 +87,17 @@ namespace Lab1
             Solution = initSolution;
         }
 
+        public abstract float CountEnergy(T[] solution);
+
+        public abstract float DownTemperature(float temperature);
+
         /// <summary>
         /// Получить оптимальное решение методом отжига
         /// </summary>
         /// <param name="countEnergy">Функция подсчёта энергии решения</param>
         /// <param name="downTemperature">Функция понижения температуры</param>
         /// <returns>Оптимальное решение, аналогичное переменной Solution</returns>
-        public T[] GetSolution(Func<T[], float> countEnergy, Func<float, float> downTemperature)
+        public T[] GetSolution()
         {
             Temperature = MaxTemperature;
             while(Temperature > MinTemperature)
@@ -87,9 +105,9 @@ namespace Lab1
                 for(int i = 0; i < Steps; i++)
                 {
                     var newSolution = ShuffleSolution();
-                    ChooseSolution(countEnergy, newSolution);
+                    ChooseSolution(newSolution);
                 }
-                Temperature = downTemperature(Temperature);
+                Temperature = DownTemperature(Temperature);
             }
             return Solution;
         }
@@ -124,10 +142,10 @@ namespace Lab1
         /// </summary>
         /// <param name="countEnergy">Функция подсчёта энергии решения</param>
         /// <param name="newSolution">Новое решение</param>
-        private void ChooseSolution(Func<T[], float> countEnergy, T[] newSolution)
+        private void ChooseSolution(T[] newSolution)
         {
-            var currEnergy = countEnergy(Solution);
-            var newEnergy = countEnergy(newSolution);
+            var currEnergy = CountEnergy(Solution);
+            var newEnergy = CountEnergy(newSolution);
             if(newEnergy < currEnergy)
             {
                 Solution = newSolution;
@@ -138,6 +156,7 @@ namespace Lab1
                 var p = Math.Exp(-deltaEnergy / Temperature) * 100;
                 int randNum = _rnd.Next(101);
                 if(randNum <= p) Solution = newSolution;
+                OnBadSolutionChoses?.Invoke(this, new EventArgs());
             }
         }
     }

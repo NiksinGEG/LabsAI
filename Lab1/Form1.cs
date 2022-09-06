@@ -5,13 +5,8 @@ namespace Lab1
 
     public partial class Form1 : Form
     {
-        public int[] Solution { get; set; } = new int[0];
-
-        public bool Initialized { get; private set; } = false;
-
         public float Energy
         {
-            get { return float.Parse(energyLbl.Text); }
             set { energyLbl.Text = value.ToString(); }
         }
 
@@ -26,54 +21,19 @@ namespace Lab1
             _params = GetCurrParams();
         }
 
-        private void Initialize()
-        {
-            Solution = new int[_params.N];
-            for (int i = 0; i < _params.N; i++) Solution[i] = i;
-            Initialized = true;
-        }
-
-        private float CountEnergyOf(int[] arr, int i)
-        {
-            float res = 0;
-            for(int j = 0; j < arr.Length; j++)
-            {
-                if (i == j) continue;
-                if (Math.Abs(arr[j] - arr[i]) == Math.Abs(j - i)) res++;
-            }
-            return res;
-        }
-
-        private float CountFullEnergy(int[] arr)
-        {
-            float res = 0;
-            for (int i = 0; i < arr.Length; i++)
-                res += CountEnergyOf(arr, i);
-            return res;
-        }
-
-        private float TemperatureFunc(float t)
-        {
-            return t * _params.Alpha;
-        }
-
-        private void initBtn_Click(object sender, EventArgs e)
-        {
-            _params = GetCurrParams();
-            Initialize();
-            _drawer.DrawField(Solution);
-        }
-
         private void evalBtn_Click(object sender, EventArgs e)
         {
             _params = GetCurrParams();
-            if(!Initialized) Initialize();
-
-            var optimizer = new FireOptimizer<int>(_params.N, _params.MaxTemperature, _params.MinTemperature, _params.Steps);
-            optimizer.Initialize(Solution);
-            Solution = optimizer.GetSolution(CountFullEnergy, TemperatureFunc);
-            Energy = CountFullEnergy(Solution);
-            _drawer.DrawField(Solution);
+            var optimizer = new NQueenSolver(
+                _params.N, 
+                _params.MaxTemperature, 
+                _params.MinTemperature, 
+                _params.Steps, 
+                _params.Alpha);
+            optimizer.Initialize();
+            var solution = optimizer.GetSolution();
+            Energy = optimizer.CountEnergy(solution);
+            _drawer.DrawField(solution);
         }
 
         private FireParameters GetCurrParams()
@@ -88,9 +48,10 @@ namespace Lab1
             };
         }
 
-        private void sizeNud_ValueChanged(object sender, EventArgs e)
+        private void analisBtn_Click(object sender, EventArgs e)
         {
-            Initialized = false;
+            var analForm = new AnalisForm();
+            analForm.ShowDialog();
         }
     }
 }
