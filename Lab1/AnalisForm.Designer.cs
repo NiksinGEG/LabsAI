@@ -60,6 +60,8 @@
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.solveBtn = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.stopBtn = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.startNud1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.startNud2)).BeginInit();
@@ -70,6 +72,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.finNud3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -516,7 +519,7 @@
             // 
             // solveBtn
             // 
-            this.solveBtn.Location = new System.Drawing.Point(422, 165);
+            this.solveBtn.Location = new System.Drawing.Point(323, 164);
             this.solveBtn.Name = "solveBtn";
             this.solveBtn.Size = new System.Drawing.Size(134, 23);
             this.solveBtn.TabIndex = 40;
@@ -531,11 +534,31 @@
             this.progressBar1.Size = new System.Drawing.Size(544, 23);
             this.progressBar1.TabIndex = 41;
             // 
+            // stopBtn
+            // 
+            this.stopBtn.Location = new System.Drawing.Point(463, 164);
+            this.stopBtn.Name = "stopBtn";
+            this.stopBtn.Size = new System.Drawing.Size(93, 23);
+            this.stopBtn.TabIndex = 42;
+            this.stopBtn.Text = "Остановить";
+            this.stopBtn.UseVisualStyleBackColor = true;
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(12, 246);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(544, 192);
+            this.pictureBox1.TabIndex = 43;
+            this.pictureBox1.TabStop = false;
+            // 
             // AnalisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(570, 450);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.solveBtn);
             this.Controls.Add(this.radioButton5);
@@ -580,6 +603,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.finNud3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -619,5 +643,7 @@
         private RadioButton radioButton5;
         private Button solveBtn;
         private ProgressBar progressBar1;
+        private Button stopBtn;
+        private PictureBox pictureBox1;
     }
 }

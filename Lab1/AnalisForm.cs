@@ -10,15 +10,21 @@ using System.Windows.Forms;
 
 namespace Lab1
 {
+    public enum ChangableValues { MaxTemperature, MinTemperature, Steps, Alpha, N }
     public partial class AnalisForm : Form
     {
         public List<Tuple<float, float>> EnergyByTemperature { get; set; }
 
         public List<Tuple<int, float>> BadChosesByTemperature { get; set; }
 
+        public ChangableValues ChangableValue { get; set; }
+
         private readonly int _valueControlsNum = 5;
 
         private Control[] _valueControls;
+
+        private bool _stop = false;
+
         public AnalisForm()
         {
             InitializeComponent();
@@ -73,13 +79,15 @@ namespace Lab1
             var curParams = GetInitialParams();
             var finParams = GetFinalParams();
 
-            progressBar1.Maximum = (int)curParams.MaxTemperature;
-            progressBar1.Minimum = (int)finParams.MaxTemperature;
-            progressBar1.Value = (int)curParams.MaxTemperature;
+            progressBar1.Maximum = (int)GetChangeableValue(curParams);
+            progressBar1.Minimum = (int)GetChangeableValue(finParams);
+            progressBar1.Value = progressBar1.Maximum - (int)GetChangeableValue(curParams) + progressBar1.Minimum;
+
+            _stop = false;
 
             Task.Factory.StartNew(() =>
             {
-                while (!ParamsAreEqual(curParams, finParams))
+                while (!_stop && !ParamsAreEqual(curParams, finParams))
                 {
                     var optimizer = new NQueenSolver(
                         curParams.N,
@@ -90,11 +98,13 @@ namespace Lab1
                     optimizer.Initialize();
 
                     optimizer.OnBadSolutionChoses += AddBadChoseByTemp;
-                    //optimizer.OnTemperatureChanges += OnTempChanges;
 
                     var solution = optimizer.GetSolution();
                     var nrg = optimizer.CountEnergy(solution);
                     EnergyByTemperature.Add(new Tuple<float, float>(nrg, GetInitialParams().MaxTemperature));
+
+                    curParams = DicreaseValue(curParams);
+                    progressBar1.BeginInvoke(() => progressBar1.Value = progressBar1.Maximum - (int)GetChangeableValue(curParams) + progressBar1.Minimum);
                 }
             });
             
@@ -112,12 +122,6 @@ namespace Lab1
             {
                 BadChosesByTemperature.Add(new Tuple<int, float>(1, op.Temperature));
             }
-        }
-
-        private void OnTempChanges(object? optimizer, EventArgs _)
-        {
-            NQueenSolver op = optimizer as NQueenSolver;
-            progressBar1.Value = (int)op.Temperature;
         }
 
         private FireParameters GetInitialParams()
@@ -151,6 +155,72 @@ namespace Lab1
                 && p1.Steps == p2.Steps
                 && p1.Alpha == p2.Alpha
                 && p1.N == p2.N;
+        }
+
+        private float GetChangeableValue(FireParameters fParams)
+        {
+            switch (ChangableValue)
+            {
+                case ChangableValues.MaxTemperature:
+                    return (float)fParams.MaxTemperature;
+                case ChangableValues.MinTemperature:
+                    return (float)fParams.MinTemperature;
+                case ChangableValues.Steps:
+                    return (float)fParams.Steps;
+                case ChangableValues.Alpha:
+                    return (float)fParams.Alpha;
+                case ChangableValues.N:
+                    return (float)fParams.N;
+                default:
+                    return 1f;
+            }
+        }
+
+        private float GetChangeStep()
+        {
+            switch(ChangableValue)
+            {
+                case ChangableValues.MaxTemperature:
+                    return (float)startNud1.Increment;
+                case ChangableValues.MinTemperature:
+                    return (float)startNud2.Increment;
+                case ChangableValues.Steps:
+                    return (float)startNud3.Increment;
+                case ChangableValues.Alpha:
+                    return (float)startNud4.Increment;
+                case ChangableValues.N:
+                    return (float)startNud5.Increment;
+                default:
+                    return 1f;
+            }
+        }
+
+        private FireParameters DicreaseValue(FireParameters current)
+        {
+            switch(ChangableValue)
+            {
+                case ChangableValues.MaxTemperature:
+                    current.MaxTemperature -= GetChangeStep();
+                    break;
+                case ChangableValues.MinTemperature:
+                    current.MinTemperature -= GetChangeStep();
+                    break;
+                case ChangableValues.Alpha:
+                    current.Alpha -= GetChangeStep();
+                    break;
+                case ChangableValues.Steps:
+                    current.Steps -= (int)GetChangeStep();
+                    break;
+                case ChangableValues.N:
+                    current.N -= (int)GetChangeStep();
+                    break;
+            }
+            return current;
+        }
+
+        private void stopBtn_Click(object sender, EventArgs e)
+        {
+            _stop = true;
         }
     }
 }
