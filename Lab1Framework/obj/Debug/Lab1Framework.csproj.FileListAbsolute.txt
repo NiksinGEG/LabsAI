@@ -1,0 +1,12 @@
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\bin\Debug\Lab1Framework.exe.config
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\bin\Debug\Lab1Framework.exe
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\bin\Debug\Lab1Framework.pdb
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.csproj.AssemblyReference.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.csproj.SuggestedBindingRedirects.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.AnalisForm.resources
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.Form1.resources
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.Properties.Resources.resources
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.csproj.GenerateResource.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.csproj.CoreCompileInputs.cache
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.exe
+C:\Users\mikle\source\repos\LabsAI\Lab1Framework\obj\Debug\Lab1Framework.pdb
