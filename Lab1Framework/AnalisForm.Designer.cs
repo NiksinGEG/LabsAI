@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.label1 = new System.Windows.Forms.Label();
             this.startNud1 = new System.Windows.Forms.NumericUpDown();
             this.startNud2 = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +67,9 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.stopBtn = new System.Windows.Forms.Button();
             this.solveBtn = new System.Windows.Forms.Button();
+            this.mainChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.stepNud = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.startNud1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.startNud2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.startNud3)).BeginInit();
@@ -71,6 +80,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.finNud3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stepNud)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -108,7 +119,6 @@
             // startNud2
             // 
             this.startNud2.DecimalPlaces = 1;
-            this.startNud2.Enabled = false;
             this.startNud2.Increment = new decimal(new int[] {
             1,
             0,
@@ -132,11 +142,10 @@
             5,
             0,
             0,
-            0});
+            65536});
             // 
             // startNud3
             // 
-            this.startNud3.Enabled = false;
             this.startNud3.Location = new System.Drawing.Point(212, 59);
             this.startNud3.Maximum = new decimal(new int[] {
             10000,
@@ -160,7 +169,6 @@
             // startNud4
             // 
             this.startNud4.DecimalPlaces = 2;
-            this.startNud4.Enabled = false;
             this.startNud4.Increment = new decimal(new int[] {
             1,
             0,
@@ -188,7 +196,6 @@
             // 
             // startNud5
             // 
-            this.startNud5.Enabled = false;
             this.startNud5.Location = new System.Drawing.Point(212, 111);
             this.startNud5.Maximum = new decimal(new int[] {
             200,
@@ -525,9 +532,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(15, 166);
+            this.progressBar1.Location = new System.Drawing.Point(556, 166);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(535, 23);
+            this.progressBar1.Size = new System.Drawing.Size(432, 23);
             this.progressBar1.TabIndex = 30;
             // 
             // stopBtn
@@ -551,11 +558,76 @@
             this.solveBtn.UseVisualStyleBackColor = true;
             this.solveBtn.Click += new System.EventHandler(this.solveBtn_Click);
             // 
+            // mainChart
+            // 
+            chartArea1.Name = "ChartArea1";
+            chartArea2.Name = "ChartArea2";
+            this.mainChart.ChartAreas.Add(chartArea1);
+            this.mainChart.ChartAreas.Add(chartArea2);
+            this.mainChart.Location = new System.Drawing.Point(15, 195);
+            this.mainChart.Name = "mainChart";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Name = "Амогус";
+            series2.ChartArea = "ChartArea2";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series2.Name = "Series2";
+            this.mainChart.Series.Add(series1);
+            this.mainChart.Series.Add(series2);
+            this.mainChart.Size = new System.Drawing.Size(973, 401);
+            this.mainChart.TabIndex = 33;
+            this.mainChart.Text = "chart1";
+            title1.Alignment = System.Drawing.ContentAlignment.TopCenter;
+            title1.DockedToChartArea = "ChartArea1";
+            title1.Name = "Title1";
+            title1.Text = "Энергия конечного решения от изменяемой величины";
+            title2.Alignment = System.Drawing.ContentAlignment.TopCenter;
+            title2.DockedToChartArea = "ChartArea2";
+            title2.Name = "Title2";
+            title2.Text = "Выборов худших решений от температуры";
+            this.mainChart.Titles.Add(title1);
+            this.mainChart.Titles.Add(title2);
+            // 
+            // stepNud
+            // 
+            this.stepNud.DecimalPlaces = 2;
+            this.stepNud.Location = new System.Drawing.Point(622, 7);
+            this.stepNud.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.stepNud.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.stepNud.Name = "stepNud";
+            this.stepNud.Size = new System.Drawing.Size(54, 20);
+            this.stepNud.TabIndex = 34;
+            this.stepNud.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(586, 8);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(30, 13);
+            this.label16.TabIndex = 35;
+            this.label16.Text = "Шаг:";
+            // 
             // AnalisForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(564, 450);
+            this.ClientSize = new System.Drawing.Size(1000, 608);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.stepNud);
+            this.Controls.Add(this.mainChart);
             this.Controls.Add(this.solveBtn);
             this.Controls.Add(this.stopBtn);
             this.Controls.Add(this.progressBar1);
@@ -590,7 +662,7 @@
             this.Controls.Add(this.startNud1);
             this.Controls.Add(this.label1);
             this.Name = "AnalisForm";
-            this.Text = "AnalisForm";
+            this.Text = "Менеджер анализа";
             ((System.ComponentModel.ISupportInitialize)(this.startNud1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.startNud2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.startNud3)).EndInit();
@@ -601,6 +673,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.finNud3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.finNud5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stepNud)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -641,5 +715,8 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button stopBtn;
         private System.Windows.Forms.Button solveBtn;
+        private System.Windows.Forms.DataVisualization.Charting.Chart mainChart;
+        private System.Windows.Forms.NumericUpDown stepNud;
+        private System.Windows.Forms.Label label16;
     }
 }

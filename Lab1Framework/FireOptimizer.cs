@@ -151,8 +151,11 @@ namespace Lab1Framework
                 var deltaEnergy = newEnergy - currEnergy;
                 var p = Math.Exp(-deltaEnergy / Temperature) * 100;
                 int randNum = _rnd.Next(101);
-                if (randNum <= p) Solution = newSolution;
-                OnBadSolutionChoses?.Invoke(this, new EventArgs());
+                if (randNum <= p)
+                {
+                    Solution = newSolution;
+                    OnBadSolutionChoses?.Invoke(this, new EventArgs());
+                }
             }
         }
     }

@@ -304,7 +304,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Задача N ферзей";
             ((System.ComponentModel.ISupportInitialize)(this.tempNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sizeNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minTempNud)).EndInit();

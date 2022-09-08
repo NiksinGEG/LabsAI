@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Lab1Framework
 {
@@ -37,8 +38,12 @@ namespace Lab1Framework
             _valueControls[4] = finNud5;
 
             EnergyByTemperature = new List<Tuple<float, float>>();
-
             BadChosesByTemperature = new List<Tuple<int, float>>();
+
+            mainChart.ChartAreas[0].AxisX.IsStartedFromZero = false;
+            mainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
+            mainChart.ChartAreas[1].AxisX.IsStartedFromZero = false;
+            mainChart.ChartAreas[1].AxisY.IsStartedFromZero = false;
         }
 
         private void RadioChoose(int num)
@@ -51,26 +56,36 @@ namespace Lab1Framework
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
+            ChangableValue = ChangableValues.MaxTemperature;
+            stepNud.Value = 0.1m;
             RadioChoose(1);
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
+            ChangableValue = ChangableValues.MinTemperature;
+            stepNud.Value = 0.1m;
             RadioChoose(2);
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
+            ChangableValue = ChangableValues.Steps;
+            stepNud.Value = 1;
             RadioChoose(3);
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
+            ChangableValue = ChangableValues.Alpha;
+            stepNud.Value = 0.01m;
             RadioChoose(4);
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
         {
+            ChangableValue = ChangableValues.N;
+            stepNud.Value = 1;
             RadioChoose(5);
         }
 
@@ -81,8 +96,15 @@ namespace Lab1Framework
 
         delegate void UpdatePb(FireParameters fParams);
 
+        delegate void UpdateSeries(int i, double x, double y);
+
         private void solveBtn_Click(object sender, EventArgs e)
         {
+            mainChart.Series[0].Points.Clear();
+            mainChart.Series[1].Points.Clear();
+            BadChosesByTemperature.Clear();
+
+
             var curParams = GetInitialParams();
             var finParams = GetFinalParams();
 
@@ -94,7 +116,7 @@ namespace Lab1Framework
 
             Task.Factory.StartNew(() =>
             {
-                while (!_stop && !ParamsAreEqual(curParams, finParams))
+                while (!_stop && CurParamsGross(curParams, finParams))
                 {
                     var optimizer = new NQueenSolver(
                         curParams.N,
@@ -104,32 +126,46 @@ namespace Lab1Framework
                         curParams.Alpha);
                     optimizer.Initialize();
 
+                    UpdatePb update1 = UpdateProgressBar;
+                    UpdateSeries update2 = AddToSeries;
+
                     optimizer.OnBadSolutionChoses += AddBadChoseByTemp;
 
                     var solution = optimizer.GetSolution();
                     var nrg = optimizer.CountEnergy(solution);
-                    EnergyByTemperature.Add(new Tuple<float, float>(nrg, GetInitialParams().MaxTemperature));
+
+                    mainChart.BeginInvoke(update2, 0, GetChangeableValue(curParams), nrg);
+                    foreach(var tuple in BadChosesByTemperature)
+                    {
+                        mainChart.BeginInvoke(update2, 1, tuple.Item2, tuple.Item1);
+                    }
+                    BadChosesByTemperature.Clear();
 
                     curParams = DicreaseValue(curParams);
-                    UpdatePb update = UpdateProgressBar;
 
-                    progressBar1.BeginInvoke(update, curParams);
+                    progressBar1.BeginInvoke(update1, curParams);
                 }
             });
         }
 
         private void UpdateProgressBar(FireParameters curParams)
         {
-            progressBar1.Value = progressBar1.Maximum - (int)GetChangeableValue(curParams) + progressBar1.Minimum;
+            var value = progressBar1.Maximum - (int)GetChangeableValue(curParams) + progressBar1.Minimum;
+            if (value < progressBar1.Minimum) value = progressBar1.Minimum;
+            if (value > progressBar1.Maximum) value = progressBar1.Maximum;
+            progressBar1.Value = value;
         }
 
         private void AddBadChoseByTemp(object optimizer, EventArgs _)
         {
             NQueenSolver op = optimizer as NQueenSolver;
-            var elem = BadChosesByTemperature.FirstOrDefault(x => x.Item2 == op.Temperature);
+            var elem = BadChosesByTemperature.Any() ? BadChosesByTemperature.FirstOrDefault(x => x.Item2 == op.Temperature) : null;
             if (elem != null)
             {
-                elem = new Tuple<int, float>(elem.Item1 + 1, elem.Item2);
+                var choses = elem.Item1;
+                var temp = elem.Item2;
+                BadChosesByTemperature.Remove(elem);
+                BadChosesByTemperature.Add(new Tuple<int, float>(choses + 1, temp));
             }
             else
             {
@@ -161,13 +197,13 @@ namespace Lab1Framework
             };
         }
 
-        private bool ParamsAreEqual(FireParameters p1, FireParameters p2)
+        private bool CurParamsGross(FireParameters p1, FireParameters p2)
         {
-            return p1.MaxTemperature == p2.MaxTemperature
-                && p1.MinTemperature == p2.MinTemperature
-                && p1.Steps == p2.Steps
-                && p1.Alpha == p2.Alpha
-                && p1.N == p2.N;
+            return p1.MaxTemperature > p2.MaxTemperature
+                || p1.MinTemperature > p2.MinTemperature
+                || p1.Steps > p2.Steps
+                || p1.Alpha > p2.Alpha
+                || p1.N > p2.N;
         }
 
         private float GetChangeableValue(FireParameters fParams)
@@ -191,7 +227,7 @@ namespace Lab1Framework
 
         private float GetChangeStep()
         {
-            switch (ChangableValue)
+            /*switch (ChangableValue)
             {
                 case ChangableValues.MaxTemperature:
                     return (float)startNud1.Increment;
@@ -205,7 +241,8 @@ namespace Lab1Framework
                     return (float)startNud5.Increment;
                 default:
                     return 1f;
-            }
+            }*/
+            return (float)stepNud.Value;
         }
 
         private FireParameters DicreaseValue(FireParameters current)
@@ -214,21 +251,31 @@ namespace Lab1Framework
             {
                 case ChangableValues.MaxTemperature:
                     current.MaxTemperature -= GetChangeStep();
+                    if (current.MaxTemperature < 0) current.MaxTemperature = 0;
                     break;
                 case ChangableValues.MinTemperature:
                     current.MinTemperature -= GetChangeStep();
+                    if (current.MinTemperature < 0) current.MinTemperature = 0;
                     break;
                 case ChangableValues.Alpha:
                     current.Alpha -= GetChangeStep();
+                    if (current.Alpha < 0) current.Alpha = 0;
                     break;
                 case ChangableValues.Steps:
                     current.Steps -= (int)GetChangeStep();
+                    if (current.Steps < 0) current.Steps = 0;
                     break;
                 case ChangableValues.N:
                     current.N -= (int)GetChangeStep();
+                    if (current.N < 0) current.N = 0;
                     break;
             }
             return current;
+        }
+
+        private void AddToSeries(int serie, double x, double y)
+        {
+            mainChart.Series[serie].Points.AddXY(x, y);
         }
     }
 }
