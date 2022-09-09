@@ -6,6 +6,11 @@
     public interface IVector
     {
         /// <summary>
+        /// Получить размер вектора
+        /// </summary>
+        /// <returns>Размер вектора</returns>
+        int Size();
+        /// <summary>
         /// Побитовое "И"
         /// </summary>
         /// <param name="vec">Операнд</param>
@@ -16,6 +21,6 @@
         /// Значимость вектора, в частности - число ненулевых разрядов
         /// </summary>
         /// <returns>Значимость вектора</returns>
-        int Normal();
+        double Normal();
     }
 }
