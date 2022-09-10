@@ -1,7 +1,7 @@
 ﻿namespace Lab2
 {
     /// <summary>
-    /// Интерфейс вектора для алгоритма APT1
+    /// Интерфейс вектора для алгоритма ART1
     /// </summary>
     public interface IVector
     {

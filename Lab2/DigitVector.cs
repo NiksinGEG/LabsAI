@@ -47,5 +47,14 @@ namespace Lab2
         {
             return _size;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DigitVector)
+            {
+                return Vector == ((DigitVector)obj).Vector;
+            }
+            return base.Equals(obj);
+        }
     }
 }

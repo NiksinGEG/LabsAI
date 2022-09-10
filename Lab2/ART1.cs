@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab2
 {
-    public class APT1
+    public class ART1
     {
         /// <summary>
         /// Бета-параметр
@@ -18,7 +18,7 @@ namespace Lab2
         /// </summary>
         public double Mindfulness { get; set; }
 
-        public APT1(double beta, double mindfulness)
+        public ART1(double beta, double mindfulness)
         {
             Beta = beta;
             Mindfulness = mindfulness;
@@ -40,28 +40,33 @@ namespace Lab2
                     bool newPrototype = true;
                     for(int i = 0; i < protoLen; i++)
                     {
-                        if (Similar(prototypes[i], attr) && Attention(prototypes[i], attr))
+                        if (Similar(newPrototypes[i], attr) && Attention(newPrototypes[i], attr))
                         {
                             newPrototype = false;
+                            if (resAttrs[i] == null)
+                                resAttrs[i] = new List<IVector>();
                             resAttrs[i].Add(attr);
                             newPrototypes[i] = newPrototypes[i].And(attr);
+                            break;
                         }
                     }
                     if(newPrototype)
                     {
                         newPrototypes[protoLen] = attr;
+                        if (resAttrs[protoLen] == null)
+                            resAttrs[protoLen] = new List<IVector>();
                         resAttrs[protoLen].Add(attr);
                         protoLen++;
                     }
                 }
-                if(Equal(prototypes, newPrototypes))
+                if(Equal(prototypes, newPrototypes, protoLen))
                 {
                     for(int i = 0; i < protoLen; i++)
                     {
                         if (resAttrs[i].Count() > 0)
                             res.Add(new Tuple<IVector, IEnumerable<IVector>>(prototypes[i], resAttrs[i]));
-                        return res;
                     }
+                    return res;
                 }
                 else
                 {
@@ -79,13 +84,18 @@ namespace Lab2
             return res;
         }
 
-        private bool Equal(IEnumerable<IVector> list1, IEnumerable<IVector> list2)
+        private bool Equal(IEnumerable<IVector> list1, IEnumerable<IVector> list2, int length)
         {
-            if (list1.Count() != list2.Count())
-                return false;
-            for (int i = 0; i < list1.Count(); i++)
+            for (int i = 0; i < length; i++)
+            {
+                if (list1.ElementAt(i) == null && list2.ElementAt(i) == null)
+                    continue;
+                if (list1.ElementAt(i) == null || list2.ElementAt(i) == null)
+                    return false;
                 if (!list1.ElementAt(i).Equals(list2.ElementAt(i)))
                     return false;
+            }
+                
             return true;
         }
 
