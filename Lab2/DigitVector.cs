@@ -2,7 +2,7 @@
 
 namespace Lab2
 {
-    public class DigitVector : IVector
+    public class DigitVector
     {
         public Int32 Vector { get; set; }
 
@@ -26,9 +26,9 @@ namespace Lab2
             }
             _size = size;
         }
-        public IVector And(IVector vec)
+        public DigitVector And(DigitVector vec)
         {
-            return new DigitVector(Vector & ((DigitVector)vec).Vector, _size);
+            return new DigitVector(Vector & vec.Vector, _size);
         }
 
         public double Normal()
@@ -46,15 +46,6 @@ namespace Lab2
         public int Size()
         {
             return _size;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is DigitVector)
-            {
-                return Vector == ((DigitVector)obj).Vector;
-            }
-            return base.Equals(obj);
         }
     }
 }

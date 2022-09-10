@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Lab2
 {
     public partial class ParamsForm : Form
     {
-        public IEnumerable<Tuple<IVector, IEnumerable<IVector>>> Clasters { get; private set; }
+        public IEnumerable<Tuple<DigitVector, IEnumerable<DigitVector>>> Clasters { get; private set; }
         public event EventHandler AfterClasterisation;
         private Label StateLbl;
         private delegate void ChangeState(string newState);
