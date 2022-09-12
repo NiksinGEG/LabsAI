@@ -1,0 +1,11 @@
+C:\Users\mikle\source\repos\LabsAI\Lab3\bin\Debug\Lab3.exe.config
+C:\Users\mikle\source\repos\LabsAI\Lab3\bin\Debug\Lab3.exe
+C:\Users\mikle\source\repos\LabsAI\Lab3\bin\Debug\Lab3.pdb
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.csproj.AssemblyReference.cache
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.csproj.SuggestedBindingRedirects.cache
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.Form1.resources
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.Properties.Resources.resources
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.csproj.GenerateResource.cache
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.csproj.CoreCompileInputs.cache
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.exe
+C:\Users\mikle\source\repos\LabsAI\Lab3\obj\Debug\Lab3.pdb
