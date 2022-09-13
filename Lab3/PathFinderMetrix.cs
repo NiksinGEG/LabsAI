@@ -19,5 +19,20 @@
         /// Коэффициент летучести (обозначается 'r') - число от 0 до 1 - чем больше, тем быстрее фермент накапливается и испаряется
         /// </summary>
         public double Volatility;
+
+        /// <summary>
+        /// "Сила" муравьёв (обозначается - 'Q')
+        /// </summary>
+        public double Strength;
+
+        /// <summary>
+        /// Количество муравьёв, изначально находящизся на каждой вершине
+        /// </summary>
+        public int ColonySize;
+
+        /// <summary>
+        /// Кол-во итераций алгоритма
+        /// </summary>
+        public int MaxIterations;
     }
 }

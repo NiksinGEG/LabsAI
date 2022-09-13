@@ -14,8 +14,6 @@ namespace Lab3
     {
         private double[,] Solution;
         private AntPathFinder PFinder;
-
-        private int CurVert = 0;
         public Form1()
         {
             InitializeComponent();
@@ -25,6 +23,9 @@ namespace Lab3
             metrix.FermentWeight = 3;
             metrix.Heuristic = 1;
             metrix.Volatility = 0.6;
+            metrix.MaxIterations = 1000;
+            metrix.ColonySize = 10;
+            metrix.Strength = 5;
             PFinder = new AntPathFinder(Solution, metrix);
         }
 
@@ -40,11 +41,9 @@ namespace Lab3
 
         private void solveBtn_Click(object sender, EventArgs e)
         {
-            var path = PFinder.FindPath(CurVert);
+            var path = PFinder.FindPath();
             testLbl.Text = DrawPath(path);
             lenLbl.Text = WayLen(path).ToString();
-            CurVert++;
-            if (CurVert >= Solution.GetLength(0)) CurVert = 0;
         }
 
         private double WayLen(int[] way)

@@ -35,7 +35,7 @@ namespace Lab3
         /// </summary>
         /// <param name="graph">Граф</param>
         /// <returns>Номер вершины в которую пошёл муравей, или -1, если идти некуда</returns>
-        public int Walk(Edge[,] graph, PathFinderMetrix metrix)
+        public int Walk(Edge[,] graph, double alpha, double beta)
         {
             var probs = new List<Tuple<int, int>>();
             for(int i = 0; i < graph.GetLength(0); i++)
@@ -43,9 +43,9 @@ namespace Lab3
                 if(i != Current && !Way.Contains(i))
                 {
                     if(probs.Count > 0)
-                        probs.Add(new Tuple<int, int>(i, Probability(graph, i, metrix) + probs.Last().Item2));
+                        probs.Add(new Tuple<int, int>(i, Probability(graph, i, alpha, beta) + probs.Last().Item2));
                     else
-                        probs.Add(new Tuple<int, int>(i, Probability(graph, i, metrix)));
+                        probs.Add(new Tuple<int, int>(i, Probability(graph, i, alpha, beta)));
                 }
             }
             if (!probs.Any()) return -1;
@@ -79,17 +79,17 @@ namespace Lab3
             return Strength / WayLength;
         }
 
-        private int Probability(Edge[,] graph, int next, PathFinderMetrix metrix)
+        private int Probability(Edge[,] graph, int next, double alpha, double beta)
         {
             double summ = 0;
             for(int i = 0; i < graph.GetLength(0); i++)
             {
                 if(i != Current && !Way.Contains(i))
                 {
-                    summ += Math.Pow(graph[Current, i].Ferment, metrix.FermentWeight) * Math.Pow(1.0 / graph[Current, i].Length, metrix.Heuristic);
+                    summ += Math.Pow(graph[Current, i].Ferment, alpha) * Math.Pow(1.0 / graph[Current, i].Length, beta);
                 }
             }
-            double prob = Math.Pow(graph[Current, next].Ferment, metrix.FermentWeight) * Math.Pow(1.0 / graph[Current, next].Length, metrix.Heuristic);
+            double prob = Math.Pow(graph[Current, next].Ferment, alpha) * Math.Pow(1.0 / graph[Current, next].Length, beta);
             return (int)(prob / summ * 100);
         }
     }
