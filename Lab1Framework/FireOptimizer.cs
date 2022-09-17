@@ -98,12 +98,22 @@ namespace Lab1Framework
             Temperature = MaxTemperature;
             while (Temperature > MinTemperature)
             {
+                T[] bestSolution = null;
+                double bestEnergy = double.NaN;
                 for (int i = 0; i < Steps; i++)
                 {
                     var newSolution = ShuffleSolution();
                     ChooseSolution(newSolution);
+
+                    var newEnergy = CountEnergy(newSolution);
+                    if (double.IsNaN(bestEnergy) || newEnergy < bestEnergy)
+                    {
+                        bestSolution = newSolution;
+                        bestEnergy = newEnergy;
+                    }
                 }
                 Temperature = DownTemperature(Temperature);
+                Solution = bestSolution;
             }
             return Solution;
         }
