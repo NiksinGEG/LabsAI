@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Lab3.Events;
 
 namespace Lab3
 {
@@ -7,6 +9,8 @@ namespace Lab3
         public Edge[,] Graph { get; set; }
 
         public PathFinderMetrix Metrix { get; set; }
+
+        public event EventHandler<GraphEventArgs> OnIterationEnd;
 
         public AntPathFinder(double[,] vertices, PathFinderMetrix metrix)
         {
@@ -47,6 +51,8 @@ namespace Lab3
                     LeaveFerment(ant);
                 }
                 FermentEvaporation();
+
+                OnIterationEnd?.Invoke(this, new GraphEventArgs(i, bestWayLen));
             }
 
             return bestWay;

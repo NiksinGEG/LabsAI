@@ -7,102 +7,90 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Lab3.Drawing;
+using Lab3.Events;
+using Lab3.Graphs;
+using Lab3.Input;
 
 namespace Lab3
 {
     public partial class Form1 : Form
     {
-        private double[,] Solution;
-        private AntPathFinder PFinder;
+        private GraphInputHandler _ih;
+        private Graph _g;
+        private delegate void UpdatePb(int newVal);
+        private delegate void UpdateC(int x, double y);
         public Form1()
         {
             InitializeComponent();
 
-            Solution = InitSolution();
-            PathFinderMetrix metrix = new PathFinderMetrix();
-            metrix.FermentWeight = 3;
-            metrix.Heuristic = 1;
-            metrix.Volatility = 0.6;
-            metrix.MaxIterations = 1000;
-            metrix.ColonySize = 10;
-            metrix.Strength = 5;
-            PFinder = new AntPathFinder(Solution, metrix);
+            _g = new Graph();
+            _ih = new GraphInputHandler(pictureBox1, _g);
         }
 
-        private string DrawPath(int[] path)
+        private async void solveBtn_Click(object sender, EventArgs e)
         {
-            string res = string.Empty;
-            foreach(var point in path)
+            var metrix = GetPathFinderParams();
+
+            var pathFinder = new AntPathFinder(_g.ToMatrix(), metrix);
+
+            mainChart.Series[0].Points.Clear();
+            mainChart.ChartAreas[0].AxisX.IsStartedFromZero = false;
+            mainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
+            progressBar.Minimum = 0;
+            progressBar.Maximum = pathFinder.Metrix.MaxIterations;
+            progressBar.Value = 0;
+            pathFinder.OnIterationEnd += UpdateForm;
+
+            var path = await Task.Factory.StartNew(pathFinder.FindPath);
+            resLbl.Text = $"Длина пути: {GetLength(path)}";
+            var drawer = new GraphDrawer(pictureBox1);
+            drawer.DrawGraph(_g);
+            drawer.DrawPathByGraph(_g, path);
+        }
+
+        private PathFinderMetrix GetPathFinderParams()
+        {
+            PathFinderMetrix metrix = new PathFinderMetrix();
+            metrix.FermentWeight = (double)weightNud.Value;
+            metrix.Heuristic = (double)heurNud.Value;
+            metrix.Volatility = (double)volatilityNud.Value;
+            metrix.MaxIterations = (int)iterationsNud.Value;
+            metrix.ColonySize = (int)colonyNud.Value;
+            metrix.Strength = (double)qNud.Value;
+            return metrix;
+        }
+
+        private void UpdateForm(object pathFinder, GraphEventArgs e)
+        {
+            UpdatePb del1 = new UpdatePb(SetNewPbVal);
+            UpdateC del2 = new UpdateC(UpdateChart);
+            progressBar.BeginInvoke(del1, e.Iterations);
+            mainChart.BeginInvoke(del2, e.Iterations, e.Length);
+        }
+
+        private void SetNewPbVal(int value)
+        {
+            progressBar.Value = value;
+        }
+
+        private void UpdateChart(int x, double y)
+        {
+            mainChart.Series[0].Points.AddXY(x, y);
+        }
+
+        private double GetLength(int[] path)
+        {
+            double res = 0;
+            for(int i = 0; i < path.Length - 1; i++)
             {
-                res += $"{point} -> ";
+                var x1 = _g.Vertices.ElementAt(i).X * 100;
+                var y1 = _g.Vertices.ElementAt(i).Y * 100;
+                var x2 = _g.Vertices.ElementAt(i + 1).X * 100;
+                var y2 = _g.Vertices.ElementAt(i + 1).Y * 100;
+                res += Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
             }
             return res;
-        }
-
-        private void solveBtn_Click(object sender, EventArgs e)
-        {
-            var path = PFinder.FindPath();
-            testLbl.Text = DrawPath(path);
-            lenLbl.Text = WayLen(path).ToString();
-        }
-
-        private double WayLen(int[] way)
-        {
-            double waylen = 0;
-            for(int i = 0; i < way.Length; i++)
-            {
-                if(i != way.Length - 1)
-                {
-                    waylen += Solution[way[i], way[i + 1]];
-                }
-                else
-                {
-                    waylen += Solution[way[i], way[0]];
-                }
-            }
-            return waylen;
-        }
-
-        private double[,] InitSolution()
-        {
-            double[,] a = new double[6, 6];
-            a[0, 1] = 10;
-            a[0, 2] = 15;
-            a[0, 3] = 11;
-            a[0, 4] = 2;
-            a[0, 5] = 55;
-
-            a[1, 0] = a[0, 1];
-            a[1, 2] = 16;
-            a[1, 3] = 18;
-            a[1, 4] = 21;
-            a[1, 5] = 13;
-
-            a[2, 0] = a[0, 2];
-            a[2, 1] = a[1, 2];
-            a[2, 3] = 39;
-            a[2, 4] = 22;
-            a[2, 5] = 3;
-
-            a[3, 0] = a[0, 3];
-            a[3, 1] = a[1, 3];
-            a[3, 2] = a[2, 3];
-            a[3, 4] = 28;
-            a[3, 5] = 25;
-
-            a[4, 0] = a[0, 4];
-            a[4, 1] = a[1, 4];
-            a[4, 2] = a[2, 4];
-            a[4, 3] = a[3, 4];
-            a[4, 5] = 2;
-
-            a[5, 0] = a[0, 5];
-            a[5, 1] = a[1, 5];
-            a[5, 2] = a[2, 5];
-            a[5, 3] = a[3, 5];
-            a[5, 4] = a[4, 5];
-
-            return a;
         }
     }
 }
