@@ -29,6 +29,7 @@ namespace Lab2
             var prototypes = new DigitVector[attributes.Count()];
             prototypes[0] = attributes.First();
             int protoLen = 1;
+
             while (!stopFlag)
             {
                 var resAttrs = new List<DigitVector>[attributes.Count()];
