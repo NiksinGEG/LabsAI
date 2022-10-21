@@ -53,10 +53,13 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TrainDataSaver.cs" />
+    <Compile Include="Models\LearnViewModel.cs" />
     <Compile Include="Models\TrainDataModel.cs" />
+    <Compile Include="NeurNet\LearnDataModel.cs" />
     <Compile Include="NeurNet\Neuron.cs" />
     <Compile Include="NeurNet\NeuronBinding.cs" />
     <Compile Include="NeurNet\NeuronNetwork.cs" />
+    <Compile Include="PictureInput.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

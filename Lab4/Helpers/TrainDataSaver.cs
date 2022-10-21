@@ -38,7 +38,7 @@ namespace Lab4.Helpers
                         if (i == line.Length - 1)
                             model.Number = int.Parse(line[i]);
                         else
-                            model.Inputs.Append(int.Parse(line[i]));
+                            model.Inputs = model.Inputs.Append(int.Parse(line[i]));
                     }
                     res.Add(model);
                 }
