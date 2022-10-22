@@ -15,11 +15,6 @@ namespace Lab4.NeurNet
             Layers = new List<ICollection<Neuron>>();
         }
 
-        private double Sigmoid(double x)
-        {
-            return 1.0 / (1 + Math.Exp(-x * 2 * Math.E));
-        }
-
         /// <summary>
         /// Добавить слой размера size с прямыми связями
         /// </summary>
@@ -31,9 +26,17 @@ namespace Lab4.NeurNet
             var last = Layers?.LastOrDefault()?.ToList();
             for(int i = 0; i < size; i++)
             {
-                var newNeu = new Neuron(x => Sigmoid(x), x => Sigmoid(x) * (1 - Sigmoid(x)));
-                newNeu.Inputs = last?.Select(n => new NeuronBinding(n, 1)).ToList() ?? new List<NeuronBinding>();
-                neurons.Add(newNeu);
+                if (last == null)
+                {
+                    var newNeu = new InputNeuron();
+                    neurons.Add(newNeu);
+                }
+                else
+                {
+                    var newNeu = new LayerNeuron();
+                    newNeu.Inputs = last.Select(n => new NeuronBinding(n, 0.5)).ToList() ?? new List<NeuronBinding>();
+                    neurons.Add(newNeu);
+                }
             }
             last?.ForEach(l => l.Outputs = neurons.Select(n => new NeuronBinding(n, 0)).ToList());
             Layers.Add(neurons);
@@ -50,15 +53,12 @@ namespace Lab4.NeurNet
             {
                 foreach (var trainData in data)
                 {
-                    //Вводим входящие данные как фиктивный слой
-                    //Layers.First().ToList().ForEach(n => n.Inputs = trainData.Item1.Select(inp => new NeuronBinding(null, inp)).ToList());
-
                     if (trainData.Item1.Count() != Layers.First().Count())
                         throw new Exception("Размерность данных не соответствует размерности первого слоя нейронной сети");
-                    //Вводим входящие данные как свободные веса нейронов первого слоя
+                    //Вводим входящие данные как выходы первого слоя
                     for (int j = 0; j < trainData.Item1.Count(); j++)
                     {
-                        Layers.First().ElementAt(j).FreeWeight = trainData.Item1.ElementAt(j);
+                        Layers.First().ElementAt(j).Input = trainData.Item1.ElementAt(j);
                     }
 
                     //Подсчёт ошибок
@@ -110,12 +110,11 @@ namespace Lab4.NeurNet
         /// <returns>Выходные значения последнего слоя ФНС</returns>
         public IEnumerable<double> Output(IEnumerable<double> inputs)
         {
-            //Layers.First().ToList().ForEach(n => n.Inputs = inputs.Select(i => new NeuronBinding(null, i)).ToList());
             if(inputs.Count() != Layers.First().Count())
                 throw new Exception("Размерность данных не соответствует размерности первого слоя нейронной сети");
             for(int i = 0; i < inputs.Count(); i++)
             {
-                Layers.First().ElementAt(i).FreeWeight = inputs.ElementAt(i);
+                Layers.First().ElementAt(i).Input = inputs.ElementAt(i);
             }
             return Layers.Last().Select(neuron => neuron.Calc());
         }

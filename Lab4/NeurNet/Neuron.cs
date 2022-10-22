@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Lab4.NeurNet
 {
-    public class Neuron
+    public abstract class Neuron
     {
         /// <summary>
         /// Входные сигналы с весами
@@ -17,38 +17,32 @@ namespace Lab4.NeurNet
         public ICollection<NeuronBinding> Outputs { get; set; }
 
         /// <summary>
-        /// Вес смещения нейрона
-        /// </summary>
-        public double FreeWeight { get; set; }
-
-        /// <summary>
         /// Ошибка
         /// </summary>
         public double Cost { get; set; }
 
+        public double Input { get; set; }
+
         /// <summary>
         /// Функция активации
         /// </summary>
-        public Func<double, double> Activation { get; set; }
+        public abstract double Activation(double x);
 
         /// <summary>
         /// Производная функции активации
         /// </summary>
-        public Func<double, double> ActivationDerivative { get; set; }
+        public abstract double ActivationDerivative(double x);
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="activation">Функция активации</param>
         /// <param name="activationDerivative">Производная функции активации</param>
-        public Neuron(Func<double, double> activation, Func<double, double> activationDerivative)
+        /*public Neuron()
         {
             Inputs = new List<NeuronBinding>();
             Outputs = new List<NeuronBinding>();
-            FreeWeight = 0;
-            Activation = activation;
-            ActivationDerivative = activationDerivative;
-        }
+        }*/
 
         /// <summary>
         /// Подсчитать сумму входных сигналов
@@ -58,9 +52,8 @@ namespace Lab4.NeurNet
             double res = 0;
             foreach(var inp in Inputs)
             {
-                res += (inp.Neuron?.Calc() ?? 0) + inp.Weight;
+                res += (inp.Neuron?.Calc() ?? 0) * inp.Weight;
             }
-            res += FreeWeight;
             return res;
         }
 

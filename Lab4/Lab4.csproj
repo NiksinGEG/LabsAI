@@ -55,6 +55,8 @@
     <Compile Include="Helpers\TrainDataSaver.cs" />
     <Compile Include="Models\LearnViewModel.cs" />
     <Compile Include="Models\TrainDataModel.cs" />
+    <Compile Include="NeurNet\InputNeuron.cs" />
+    <Compile Include="NeurNet\LayerNeuron.cs" />
     <Compile Include="NeurNet\LearnDataModel.cs" />
     <Compile Include="NeurNet\Neuron.cs" />
     <Compile Include="NeurNet\NeuronBinding.cs" />

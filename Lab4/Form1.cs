@@ -27,7 +27,7 @@ namespace Lab4
 
             _network = new NeuronNetwork();
             _network.AddStraightLayer(_pinp.Size * _pinp.Size)
-                .AddStraightLayer(_pinp.Size)
+                .AddStraightLayer(_pinp.Size * _pinp.Size / 2)
                 .AddStraightLayer(10);
         }
 
