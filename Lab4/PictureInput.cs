@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,13 @@ namespace Lab4
             _g.Clear(Color.White);
             DrawGrid();
             DrawPixels();
+        }
+
+        public void Reset()
+        {
+            for (int i = 0; i < Size; i++)
+                for (int j = 0; j < Size; j++)
+                    Pixels[i, j] = 0;
         }
 
         private void DrawGrid()

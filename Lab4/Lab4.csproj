@@ -52,6 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EnumerableZipExtension.cs" />
     <Compile Include="Helpers\TrainDataSaver.cs" />
     <Compile Include="Models\LearnViewModel.cs" />
     <Compile Include="Models\TrainDataModel.cs" />

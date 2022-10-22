@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Lab4.Helpers;
@@ -20,6 +16,10 @@ namespace Lab4
         private readonly PictureInput _pinp;
         private readonly NeuronNetwork _network;
 
+        delegate void SmthWithString(string s);
+
+        delegate void LearnStep(object sender, LearnDataModel data);
+
         public Form1()
         {
             InitializeComponent();
@@ -29,6 +29,7 @@ namespace Lab4
             _network.AddStraightLayer(_pinp.Size * _pinp.Size)
                 .AddStraightLayer(_pinp.Size * _pinp.Size / 2)
                 .AddStraightLayer(10);
+            _network.OnLearnStep += HandleLearnStep;
         }
 
         public LearnViewModel GetFromView()
@@ -44,6 +45,19 @@ namespace Lab4
         {
             this.mainPb.Maximum = model.LearnProgressMax;
             this.mainPb.Value = model.LearnProgress;
+        }
+
+        private void HandleLearnStep(object s, LearnDataModel data)
+        {
+            LearnStep func = OnLearnStep;
+            mainPb.Invoke(func, s, data);
+        }
+
+        private void OnLearnStep(object s, LearnDataModel data)
+        {
+            data.Epoch = data.Epoch > mainPb.Maximum ? mainPb.Maximum : data.Epoch;
+            data.Epoch = data.Epoch < mainPb.Minimum ? mainPb.Minimum : data.Epoch;
+            mainPb.Value = data.Epoch;
         }
 
         private void chooseFileBtn_Click(object sender, EventArgs e)
@@ -69,8 +83,6 @@ namespace Lab4
             }
         }
 
-        delegate void SmthWithString(string s);
-
         private void UpdateStatus(string status)
         {
             statusLbl.Text = status;
@@ -78,6 +90,11 @@ namespace Lab4
 
         private void learnBtn_Click(object sender, EventArgs e)
         {
+            mainPb.Minimum = 0;
+            mainPb.Maximum = (int)epochNud.Value - 1;
+            mainPb.Value = 0;
+            SmthWithString func = UpdateStatus;
+
             var trainModels = new List<TrainDataModel>();
             try
             {
@@ -88,14 +105,19 @@ namespace Lab4
                 statusLbl.Text = "Не удалось считать данные для обучения";
             }
 
-            statusLbl.Text = "Подготовка обучающих данных";
+            statusLbl.BeginInvoke(func, "Подготовка обучающих данных...");
             var trainData = trainModels.Select(x => (x.Inputs.Select(y => (double)y), OutputsByNumber(x.Number)));
-            statusLbl.Text = "Обучение...";
-            SmthWithString func = UpdateStatus;
+            statusLbl.BeginInvoke(func, "Обучение...");
+            LearnStep func2 = OnLearnStep;
             var learnTask = Task.Factory.StartNew(() =>
             {
                 _network.Fit(trainData, (double)learnFactorNud.Value, (int)epochNud.Value);
                 statusLbl.Invoke(func, "Обучение завершено!");
+                mainPb.Invoke(func2, null, new LearnDataModel()
+                {
+                    Epoch = 0,
+                    MaxEpoch = 1
+                });
             });
         }
 
@@ -139,6 +161,12 @@ namespace Lab4
             var outs = _network.Output(inputs);
             int res = NumberByOutputs(outs);
             mainLbl.Text = res.ToString();
+        }
+
+        private void eraseBtn_Click(object sender, EventArgs e)
+        {
+            _pinp.Reset();
+            _pinp.Draw();
         }
     }
 }

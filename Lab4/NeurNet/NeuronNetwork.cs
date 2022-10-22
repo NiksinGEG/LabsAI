@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Lab4.Helpers;
 
 namespace Lab4.NeurNet
 {
@@ -10,9 +11,17 @@ namespace Lab4.NeurNet
 
         public event EventHandler<LearnDataModel> OnLearnStep;
 
+        private readonly Random _rnd;
+
         public NeuronNetwork()
         {
             Layers = new List<ICollection<Neuron>>();
+            _rnd = new Random();
+        }
+
+        private double RndWeigh()
+        {
+            return _rnd.NextDouble() - 0.5;
         }
 
         /// <summary>
@@ -34,7 +43,7 @@ namespace Lab4.NeurNet
                 else
                 {
                     var newNeu = new LayerNeuron();
-                    newNeu.Inputs = last.Select(n => new NeuronBinding(n, 0.5)).ToList() ?? new List<NeuronBinding>();
+                    newNeu.Inputs = last.Select(n => new NeuronBinding(n, RndWeigh())).ToList();
                     neurons.Add(newNeu);
                 }
             }
@@ -56,10 +65,7 @@ namespace Lab4.NeurNet
                     if (trainData.Item1.Count() != Layers.First().Count())
                         throw new Exception("Размерность данных не соответствует размерности первого слоя нейронной сети");
                     //Вводим входящие данные как выходы первого слоя
-                    for (int j = 0; j < trainData.Item1.Count(); j++)
-                    {
-                        Layers.First().ElementAt(j).Input = trainData.Item1.ElementAt(j);
-                    }
+                    Layers.First().Zipp(trainData.Item1, (x, y) => x.Input = y);
 
                     //Подсчёт ошибок
                     //TODO: подумать как сделать красиво, потому что Reverse() это O(N), но и обращение к i-му элему списка это O(N)
@@ -68,13 +74,7 @@ namespace Lab4.NeurNet
                     {
                         if (layer == Layers.Last())
                         {
-                            if (layer.Count() != trainData.Item2.Count()) throw new Exception("Количество классов на выходе нейросети не равно количеству тренировочных классов!");
-                            //layer.Zip(trainData.Item2, (n, res) => n.Cost = res - n.Calc());
-                            for(int j = 0; j < layer.Count(); j++)
-                            {
-                                var neuron = layer.ElementAt(j);
-                                neuron.Cost = trainData.Item2.ElementAt(j) - neuron.Calc();
-                            }
+                            layer.Zipp(trainData.Item2, (x, y) => x.Cost = y - x.Calc());
                         }
                         else
                         {
@@ -87,9 +87,10 @@ namespace Lab4.NeurNet
                     {
                         foreach (var neuron in layer) //Йяй
                         {
+                            var p = neuron.Potential();
                             foreach (var inp in neuron.Inputs) //Йяй
                             {
-                                inp.Weight += learnFactor * neuron.Cost * neuron.ActivationDerivative(neuron.Potential()) * inp.Neuron.Calc();
+                                inp.Weight += learnFactor * neuron.Cost * neuron.ActivationDerivative(p) * inp.Neuron.Calc();
                             }
                         }
                     }
@@ -110,12 +111,7 @@ namespace Lab4.NeurNet
         /// <returns>Выходные значения последнего слоя ФНС</returns>
         public IEnumerable<double> Output(IEnumerable<double> inputs)
         {
-            if(inputs.Count() != Layers.First().Count())
-                throw new Exception("Размерность данных не соответствует размерности первого слоя нейронной сети");
-            for(int i = 0; i < inputs.Count(); i++)
-            {
-                Layers.First().ElementAt(i).Input = inputs.ElementAt(i);
-            }
+            Layers.First().Zipp(inputs, (x, y) => x.Input = y);
             return Layers.Last().Select(neuron => neuron.Calc());
         }
     }

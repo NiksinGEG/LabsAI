@@ -46,6 +46,7 @@
             this.epochNud = new System.Windows.Forms.NumericUpDown();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusLbl = new System.Windows.Forms.Label();
+            this.eraseBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainCanvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberNud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.learnFactorNud)).BeginInit();
@@ -168,7 +169,7 @@
             this.mainLbl.Name = "mainLbl";
             this.mainLbl.Size = new System.Drawing.Size(206, 226);
             this.mainLbl.TabIndex = 13;
-            this.mainLbl.Text = "8";
+            this.mainLbl.Text = "?";
             // 
             // label4
             // 
@@ -182,12 +183,22 @@
             // learnFactorNud
             // 
             this.learnFactorNud.DecimalPlaces = 2;
+            this.learnFactorNud.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.learnFactorNud.Location = new System.Drawing.Point(606, 23);
             this.learnFactorNud.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            this.learnFactorNud.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.learnFactorNud.Name = "learnFactorNud";
             this.learnFactorNud.Size = new System.Drawing.Size(108, 20);
             this.learnFactorNud.TabIndex = 15;
@@ -241,11 +252,22 @@
             this.statusLbl.TabIndex = 18;
             this.statusLbl.Text = "Статус";
             // 
+            // eraseBtn
+            // 
+            this.eraseBtn.Location = new System.Drawing.Point(507, 489);
+            this.eraseBtn.Name = "eraseBtn";
+            this.eraseBtn.Size = new System.Drawing.Size(75, 23);
+            this.eraseBtn.TabIndex = 19;
+            this.eraseBtn.Text = "Стереть";
+            this.eraseBtn.UseVisualStyleBackColor = true;
+            this.eraseBtn.Click += new System.EventHandler(this.eraseBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(941, 581);
+            this.Controls.Add(this.eraseBtn);
             this.Controls.Add(this.statusLbl);
             this.Controls.Add(this.epochNud);
             this.Controls.Add(this.label5);
@@ -294,6 +316,7 @@
         private System.Windows.Forms.NumericUpDown epochNud;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Label statusLbl;
+        private System.Windows.Forms.Button eraseBtn;
     }
 }
 
