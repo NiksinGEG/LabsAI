@@ -1,0 +1,17 @@
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\bin\Debug\net6.0-windows\SubLaba1.exe
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\bin\Debug\net6.0-windows\SubLaba1.deps.json
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\bin\Debug\net6.0-windows\SubLaba1.runtimeconfig.json
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\bin\Debug\net6.0-windows\SubLaba1.dll
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\bin\Debug\net6.0-windows\SubLaba1.pdb
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.csproj.AssemblyReference.cache
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.csproj.GenerateResource.cache
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.AssemblyInfoInputs.cache
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.AssemblyInfo.cs
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.csproj.CoreCompileInputs.cache
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.dll
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\refint\SubLaba1.dll
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.pdb
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.genruntimeconfig.cache
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\ref\SubLaba1.dll
+C:\Users\mikle\source\repos\LabsAI\SubLaba1\obj\Debug\net6.0-windows\SubLaba1.MainForm.resources
