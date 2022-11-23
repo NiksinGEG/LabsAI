@@ -43,6 +43,7 @@
             this.AnswerLbl = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.EraseBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainCanvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxIterationsNud)).BeginInit();
             this.SuspendLayout();
@@ -193,11 +194,22 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
+            // EraseBtn
+            // 
+            this.EraseBtn.Location = new System.Drawing.Point(518, 489);
+            this.EraseBtn.Name = "EraseBtn";
+            this.EraseBtn.Size = new System.Drawing.Size(75, 23);
+            this.EraseBtn.TabIndex = 15;
+            this.EraseBtn.Text = "Стереть";
+            this.EraseBtn.UseVisualStyleBackColor = true;
+            this.EraseBtn.Click += new System.EventHandler(this.EraseBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(926, 591);
+            this.Controls.Add(this.EraseBtn);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.AnswerLbl);
             this.Controls.Add(this.label4);
@@ -238,5 +250,6 @@
         private Label AnswerLbl;
         private ProgressBar progressBar;
         private OpenFileDialog openFileDialog;
+        private Button EraseBtn;
     }
 }

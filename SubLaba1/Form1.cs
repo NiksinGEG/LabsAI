@@ -1,33 +1,33 @@
-using SubLaba1.Models;
 using SubLaba1.Helpers;
+using SubLaba1.Controllers;
 
 namespace SubLaba1
 {
     public partial class MainForm : Form
     {
         private readonly PictureInput _pictInput;
-        private Perceptron perceptron;
-        private Task learningTask;
-        private CancellationTokenSource learningCancelToken;
+        private INetworkController controller;
 
         public MainForm()
         {
             InitializeComponent();
+
             int pictureSize = 8;
             _pictInput = new PictureInput(MainCanvas, pictureSize);
-            learningCancelToken = new CancellationTokenSource();
-            perceptron = new Perceptron(pictureSize * pictureSize);
-            perceptron.OnLearnStep += OnLearnStep;
-            perceptron.OnLearnEnd += OnLearnEnd;
+
+            controller = new Lab2Controller(pictureSize * pictureSize);
+            controller.OnLearnStep += OnLearnStep;
+            controller.OnLearnEnd += OnLearnEnd;
+
+            NumberComboBox.Items.Clear();
+            var gusssableData = controller.GetGuessableData();
+            foreach (var data in gusssableData) NumberComboBox.Items.Add(data);
         }
 
         private void AddTrainBtn_Click(object sender, EventArgs e)
         {
-            var newData = new TrainDataModel()
-            {
-                Number = int.Parse(NumberComboBox.Text) == 0 ? 1 : -1,
-                Inputs = MapPixels(_pictInput.Pixels)
-            };
+            var inputs = MapPixels(_pictInput.Pixels);
+            var newData = controller.GetSavingModel(inputs, NumberComboBox.Text);
             try
             {
                 TrainDataSaver.Save(FileNameInput.Text, newData);
@@ -47,41 +47,41 @@ namespace SubLaba1
 
         private void LearnBtn_Click(object sender, EventArgs e)
         {
-            if (learningTask != null && learningTask.Status == TaskStatus.Running)
+            if (controller.IsLearnRunning)
             {
-                learningCancelToken.Cancel();
+                controller.CancelLearning();
                 LearnBtn.Text = "Начать обучение";
                 return;
             }
+
             var maxEpoch = (int)MaxIterationsNud.Value;
+            var data = TrainDataSaver.FromFile(FileNameInput.Text);
+            
             progressBar.Maximum = maxEpoch;
             progressBar.Minimum = 0;
             progressBar.Value = 0;
-
-            var data = this.GetLearnData(FileNameInput.Text);
             LearnBtn.Text = "Остановить обучение";
-            learningTask = Task.Factory.StartNew(() =>
+
+            try
             {
-                perceptron.Fit(data, maxEpoch);
-            }, learningCancelToken.Token);
+                controller.StartLearning(data, maxEpoch);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Не удалось начать обучение. Ошибка:" + Environment.NewLine + ex.Message, "ОШИБКА");
+            }
         }
 
         private void CalcBtn_Click(object sender, EventArgs e)
         {
-            var inputs = MapPixels(_pictInput.Pixels).Select(x => (double)x);
-            var answer = perceptron.Guess(inputs);
-            AnswerLbl.Text = (answer < 0 ? 5 : 0).ToString();
+            var inputs = MapPixels(_pictInput.Pixels);
+            AnswerLbl.Text = controller.Guess(inputs);
         }
 
-        private IEnumerable<(IEnumerable<double>, double)> GetLearnData(string filename)
+        private void EraseBtn_Click(object sender, EventArgs e)
         {
-            var dataModels = TrainDataSaver.FromFile(filename);
-            var res = new List<(IEnumerable<double>, double)>();
-            foreach (var model in dataModels)
-            {
-                res.Add((model.Inputs.Select(x => (double)x), model.Number));
-            }
-            return res;
+            _pictInput.Reset();
+            _pictInput.Draw();
         }
 
         private void OnLearnStep(object? sender, int epoch)

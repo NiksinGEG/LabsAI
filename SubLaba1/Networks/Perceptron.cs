@@ -1,7 +1,7 @@
 ﻿using SubLaba1.Helpers;
 using SubLaba1.Neurons;
 
-namespace SubLaba1
+namespace SubLaba1.Networks
 {
     public class Perceptron
     {
@@ -34,8 +34,8 @@ namespace SubLaba1
                 foreach (var item in trainData)
                 {
                     if (item.Item1.Count() != inputSize) throw new Exception("Неверная длина тренировочных данных");
-                    // Устанавливаем входы перцептрона
-                    item.Item1.Zipp(perceptron.Inputs, (input, bind) => bind.Neuron.Input = input);
+
+                    SetInputs(perceptron, item.Item1);
 
                     double output = item.Item2;
                     // Пересчет весов относительно необходимого выхода
@@ -49,8 +49,7 @@ namespace SubLaba1
                 //Проверка условия останова
                 foreach (var item in trainData)
                 {
-                    // Устанавливаем входы перцептрона
-                    item.Item1.Zipp(perceptron.Inputs, (input, bind) => bind.Neuron.Input = input);
+                    SetInputs(perceptron, item.Item1);
 
                     stop &= Math.Abs(perceptron.Calc() - item.Item2) < 0.001;
                     if (!stop) break;
@@ -68,10 +67,15 @@ namespace SubLaba1
         {
             if (inputs.Count() != inputSize) throw new Exception("Неверная длина входных данных");
 
-            // Устанавливаем входы перцептрона
-            inputs.Zipp(perceptron.Inputs, (input, bind) => bind.Neuron.Input = input);
+            SetInputs(perceptron, inputs);
 
             return perceptron.Calc();
+        }
+
+        // Установка входов нейрона
+        private void SetInputs(Neuron neuron, IEnumerable<double> inputs)
+        {
+            inputs.Zipp(neuron.Inputs, (input, bind) => bind.Neuron.Input = input);
         }
     }
 }
