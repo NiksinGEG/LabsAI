@@ -51,12 +51,12 @@ namespace SubLaba1.Controllers
             while (valuesDict[num].Item1 != value) num++;
             return new TrainDataModel()
             {
-                Inputs = pixels,
+                Inputs = pixels.Select(x => x > 0 ? 1 : -1),
                 Number = num
             };
         }
 
-        public void StartLearning(IEnumerable<TrainDataModel> trainData, int maxEpoch)
+        public void StartLearning(IEnumerable<TrainDataModel> trainData, double _, int maxEpoch)
         {
             if (IsLearnRunning) throw new Exception("Обучение уже запущено");
 

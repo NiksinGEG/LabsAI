@@ -19,5 +19,15 @@ namespace SubLaba1.Helpers
                 func(iter1.Current, iter2.Current);
             }
         }
+
+        public static int IndexOf<Tcol>(this IEnumerable<Tcol> collection, Tcol value)
+        {
+            var iter = collection.GetEnumerator();
+            for (int i = 0; iter.MoveNext(); i++)
+            {
+                if (iter.Current.Equals(value)) return i;
+            }
+            return -1;
+        }
     }
 }

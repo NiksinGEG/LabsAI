@@ -25,7 +25,7 @@ namespace SubLaba1.Controllers
         {
             return new TrainDataModel()
             {
-                Inputs = pixels,
+                Inputs = pixels.Select(x => x > 0 ? 1 : -1),
                 Number = int.Parse(number) == 0 ? 1 : -1
             };
         }
@@ -35,7 +35,7 @@ namespace SubLaba1.Controllers
             return new string[] { "0", "5" };
         }
 
-        public void StartLearning(IEnumerable<TrainDataModel> trainData, int maxEpoch)
+        public void StartLearning(IEnumerable<TrainDataModel> trainData, double _, int maxEpoch)
         {
             if (IsLearnRunning) throw new Exception("Обучение уже запущено");
 

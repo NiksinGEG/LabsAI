@@ -8,7 +8,7 @@ namespace SubLaba1.Controllers
 
         TrainDataModel GetSavingModel(IEnumerable<int> pixels, string number);
 
-        void StartLearning(IEnumerable<TrainDataModel> trainData, int maxEpoch);
+        void StartLearning(IEnumerable<TrainDataModel> trainData, double learnFactor, int maxEpoch);
 
         bool IsLearnRunning { get; }
 

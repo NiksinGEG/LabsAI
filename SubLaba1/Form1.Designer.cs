@@ -44,8 +44,11 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.EraseBtn = new System.Windows.Forms.Button();
+            this.LearnFactorNud = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainCanvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxIterationsNud)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LearnFactorNud)).BeginInit();
             this.SuspendLayout();
             // 
             // MainCanvas
@@ -146,7 +149,7 @@
             // 
             // LearnBtn
             // 
-            this.LearnBtn.Location = new System.Drawing.Point(518, 92);
+            this.LearnBtn.Location = new System.Drawing.Point(518, 135);
             this.LearnBtn.Name = "LearnBtn";
             this.LearnBtn.Size = new System.Drawing.Size(174, 23);
             this.LearnBtn.TabIndex = 10;
@@ -156,7 +159,7 @@
             // 
             // CalcBtn
             // 
-            this.CalcBtn.Location = new System.Drawing.Point(698, 92);
+            this.CalcBtn.Location = new System.Drawing.Point(698, 135);
             this.CalcBtn.Name = "CalcBtn";
             this.CalcBtn.Size = new System.Drawing.Size(216, 23);
             this.CalcBtn.TabIndex = 11;
@@ -167,7 +170,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(518, 156);
+            this.label4.Location = new System.Drawing.Point(518, 203);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(196, 15);
             this.label4.TabIndex = 12;
@@ -177,7 +180,7 @@
             // 
             this.AnswerLbl.AutoSize = true;
             this.AnswerLbl.Font = new System.Drawing.Font("Segoe UI", 150F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AnswerLbl.Location = new System.Drawing.Point(615, 184);
+            this.AnswerLbl.Location = new System.Drawing.Point(618, 218);
             this.AnswerLbl.Name = "AnswerLbl";
             this.AnswerLbl.Size = new System.Drawing.Size(202, 265);
             this.AnswerLbl.TabIndex = 13;
@@ -185,7 +188,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(518, 121);
+            this.progressBar.Location = new System.Drawing.Point(518, 164);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(174, 23);
             this.progressBar.TabIndex = 14;
@@ -204,11 +207,50 @@
             this.EraseBtn.UseVisualStyleBackColor = true;
             this.EraseBtn.Click += new System.EventHandler(this.EraseBtn_Click);
             // 
+            // LearnFactorNud
+            // 
+            this.LearnFactorNud.DecimalPlaces = 2;
+            this.LearnFactorNud.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.LearnFactorNud.Location = new System.Drawing.Point(649, 86);
+            this.LearnFactorNud.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.LearnFactorNud.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.LearnFactorNud.Name = "LearnFactorNud";
+            this.LearnFactorNud.Size = new System.Drawing.Size(120, 23);
+            this.LearnFactorNud.TabIndex = 16;
+            this.LearnFactorNud.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(518, 88);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(104, 15);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Норма обучения:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(926, 591);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.LearnFactorNud);
             this.Controls.Add(this.EraseBtn);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.AnswerLbl);
@@ -228,6 +270,7 @@
             this.Text = "Обучение по Хэббу";
             ((System.ComponentModel.ISupportInitialize)(this.MainCanvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxIterationsNud)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LearnFactorNud)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -251,5 +294,7 @@
         private ProgressBar progressBar;
         private OpenFileDialog openFileDialog;
         private Button EraseBtn;
+        private NumericUpDown LearnFactorNud;
+        private Label label5;
     }
 }

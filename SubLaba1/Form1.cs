@@ -15,7 +15,7 @@ namespace SubLaba1
             int pictureSize = 8;
             _pictInput = new PictureInput(MainCanvas, pictureSize);
 
-            controller = new Lab2Controller(pictureSize * pictureSize);
+            controller = new Lab5BController(pictureSize * pictureSize);
             controller.OnLearnStep += OnLearnStep;
             controller.OnLearnEnd += OnLearnEnd;
 
@@ -55,6 +55,7 @@ namespace SubLaba1
             }
 
             var maxEpoch = (int)MaxIterationsNud.Value;
+            var factor = (double)LearnFactorNud.Value;
             var data = TrainDataSaver.FromFile(FileNameInput.Text);
             
             progressBar.Maximum = maxEpoch;
@@ -64,7 +65,7 @@ namespace SubLaba1
 
             try
             {
-                controller.StartLearning(data, maxEpoch);
+                controller.StartLearning(data, factor, maxEpoch);
             }
             catch(Exception ex)
             {
@@ -110,7 +111,7 @@ namespace SubLaba1
             int size = pixels.GetLength(0);
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    res.Add(pixels[i, j] > 0 ? 1 : -1);
+                    res.Add(pixels[i, j] > 0 ? 1 : 0);
             return res;
         }
     }
