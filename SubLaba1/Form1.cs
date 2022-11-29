@@ -110,7 +110,7 @@ namespace SubLaba1
             int size = pixels.GetLength(0);
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    res.Add(pixels[i, j] > 0 ? 1 : 0);
+                    res.Add(pixels[i, j] > 0 ? 1 : -1);
             return res;
         }
     }

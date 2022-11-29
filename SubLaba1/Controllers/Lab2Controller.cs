@@ -117,6 +117,7 @@ namespace SubLaba1.Controllers
                     resIndex = i;
                     minDelta = delta;
                 }
+                i++;
             }
             return resIndex;
         }

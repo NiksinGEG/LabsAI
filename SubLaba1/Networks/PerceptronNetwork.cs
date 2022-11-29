@@ -27,26 +27,28 @@ namespace SubLaba1.Networks
             this.neurons = neurons;
         }
 
-        public void Fit(IEnumerable<(IEnumerable<double>, IEnumerable<double>)> trainData, int maxEpoch)
+        public void Fit(IEnumerable<(IEnumerable<double> inputs, IEnumerable<double> expectedOutput)> trainData, int maxEpoch)
         {
             int epoch = 0;
             while (epoch < maxEpoch)
             {
                 foreach (var dataItem in trainData)
                 {
-                    var inputs = dataItem.Item1;
-                    var expectedOutput = dataItem.Item2;
-
-                    if (inputs.Count() != inputSize || expectedOutput.Count() != neurons.Count())
+                    if (dataItem.inputs.Count() != inputSize || dataItem.expectedOutput.Count() != neurons.Count())
                         throw new Exception("Входы или выходы тренировочных данных были неверной длины");
 
-                    foreach (var n in neurons) SetInputs(n, inputs); //Установили входы всем нейронам
-                    if (!Same(neurons.Select(n => n.Calc()), expectedOutput)) // Если выходы нейронов отличаются от требуемых
+                    foreach (var n in neurons) SetInputs(n, dataItem.inputs); //Установили входы всем нейронам
+
+                    var currentOutput = neurons.Select(n => n.Calc());
+                    if (!Same(currentOutput, dataItem.expectedOutput)) // Если выходы нейронов отличаются от требуемых
                     {
-                        neurons.Zipp(expectedOutput, (neuron, output) =>
+                        // Пересчет весов
+                        // !! Использовался алгоритм Ойя, потому что иначе - не сходится :( !!
+                        neurons.Zipp(dataItem.expectedOutput, (neuron, output) =>
                         {
+                            var neuronOut = neuron.Calc();
                             foreach (var inp in neuron.Inputs)
-                                inp.Weight += inp.Neuron.Calc() * output;
+                                inp.Weight += output * (inp.Neuron.Calc() - neuronOut);
                         });
                     }
                 }
@@ -55,10 +57,8 @@ namespace SubLaba1.Networks
                 bool stop = true;
                 foreach (var dataItem in trainData)
                 {
-                    var inputs = dataItem.Item1;
-                    var expectedOut = dataItem.Item2;
-                    foreach (var n in neurons) SetInputs(n, inputs);
-                    stop &= Same(neurons.Select(x => x.Calc()), expectedOut);
+                    foreach (var n in neurons) SetInputs(n, dataItem.inputs);
+                    stop &= Same(neurons.Select(x => x.Calc()), dataItem.expectedOutput);
                 }
                 if (stop) break;
                 epoch++;
@@ -69,7 +69,7 @@ namespace SubLaba1.Networks
 
         public IEnumerable<double> Guess(IEnumerable<double> inputs)
         {
-            if (inputs.Count() != inputSize) throw new Exception($"Неверное количество входов (было {inputs.Count()}, ожидалось {inputSize}");
+            if (inputs.Count() != inputSize) throw new Exception($"Неверное количество входов (было {inputs.Count()}, ожидалось {inputSize})");
             foreach (var n in neurons) SetInputs(n, inputs);
             return neurons.Select(x => x.Calc());
         }

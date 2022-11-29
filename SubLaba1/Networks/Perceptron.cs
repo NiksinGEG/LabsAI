@@ -26,32 +26,31 @@ namespace SubLaba1.Networks
             perceptron.Inputs.Add(new NeuronBinding(new InputNeuron(1), 0));
         }
 
-        public void Fit(IEnumerable<(IEnumerable<double>, double)> trainData, int maxEpoch)
+        public void Fit(IEnumerable<(IEnumerable<double> inputs, double output)> trainData, int maxEpoch)
         {
             int epoch = 0;
             while (epoch < maxEpoch)
             {
-                foreach (var item in trainData)
+                foreach (var dataItem in trainData)
                 {
-                    if (item.Item1.Count() != inputSize) throw new Exception("Неверная длина тренировочных данных");
+                    if (dataItem.inputs.Count() != inputSize) throw new Exception("Неверная длина тренировочных данных");
 
-                    SetInputs(perceptron, item.Item1);
+                    SetInputs(perceptron, dataItem.inputs);
 
-                    double output = item.Item2;
                     // Пересчет весов относительно необходимого выхода
                     foreach (var input in perceptron.Inputs)
                     {
-                        input.Weight += input.Neuron.Calc() * output;
+                        input.Weight += input.Neuron.Calc() * dataItem.output;
                     }
                 }
 
                 bool stop = true;
                 //Проверка условия останова
-                foreach (var item in trainData)
+                foreach (var dataItem in trainData)
                 {
-                    SetInputs(perceptron, item.Item1);
+                    SetInputs(perceptron, dataItem.inputs);
 
-                    stop &= Math.Abs(perceptron.Calc() - item.Item2) < 0.001;
+                    stop &= Math.Abs(perceptron.Calc() - dataItem.output) < 0.001;
                     if (!stop) break;
                 }
 
