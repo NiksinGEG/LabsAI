@@ -101,9 +101,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(80, 520);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.Size = new System.Drawing.Size(63, 15);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Цифра:";
+            this.label2.Text = "Значение:";
             // 
             // NumberComboBox
             // 
@@ -172,9 +172,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(518, 203);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(196, 15);
+            this.label4.Size = new System.Drawing.Size(211, 15);
             this.label4.TabIndex = 12;
-            this.label4.Text = "Нейросеть считает что это цифра:";
+            this.label4.Text = "Нейросеть считает что это значение:";
             // 
             // AnswerLbl
             // 

@@ -6,7 +6,7 @@ namespace SubLaba1.Controllers
     {
         IEnumerable<string> GetGuessableData();
 
-        TrainDataModel GetSavingModel(IEnumerable<int> pixels, string number);
+        TrainDataModel GetSavingModel(IEnumerable<int> pixels, string value);
 
         void StartLearning(IEnumerable<TrainDataModel> trainData, double learnFactor, int maxEpoch);
 
