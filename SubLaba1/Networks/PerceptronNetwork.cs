@@ -43,12 +43,10 @@ namespace SubLaba1.Networks
                     if (!Same(currentOutput, dataItem.expectedOutput)) // Если выходы нейронов отличаются от требуемых
                     {
                         // Пересчет весов
-                        // !! Использовался алгоритм Ойя, потому что иначе - не сходится :( !!
                         neurons.Zipp(dataItem.expectedOutput, (neuron, output) =>
                         {
-                            var neuronOut = neuron.Calc();
                             foreach (var inp in neuron.Inputs)
-                                inp.Weight += output * (inp.Neuron.Calc() - neuronOut);
+                                inp.Weight += output * inp.Neuron.Calc();
                         });
                     }
                 }

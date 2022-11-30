@@ -15,7 +15,7 @@ namespace SubLaba1
             int pictureSize = 8;
             _pictInput = new PictureInput(MainCanvas, pictureSize);
 
-            controller = new Lab5BController(pictureSize * pictureSize);
+            controller = new Lab2Controller(pictureSize * pictureSize);
             controller.OnLearnStep += OnLearnStep;
             controller.OnLearnEnd += OnLearnEnd;
 

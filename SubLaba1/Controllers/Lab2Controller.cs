@@ -19,22 +19,11 @@ namespace SubLaba1.Controllers
         private Task? learningTask;
         private CancellationTokenSource learningCancelToken;
 
-        /// <summary>
-        /// Связка буквы с ожидаемыми для неё выходами нейронки<br/>
-        /// В файле как значение сохраняется индекс (0..4) записи этого словаря
-        /// </summary>
-        private (string, double[])[] valuesDict = new (string, double[])[]
-        {
-            ("д", new double[] { 1, -1, -1, -1, -1 }),
-            ("и", new double[] { -1, 1, -1, -1, -1 }),
-            ("о", new double[] { -1, -1, 1, -1, -1 }),
-            ("р", new double[] { -1, -1, -1, 1, -1 }),
-            ("е", new double[] { -1, -1, -1, -1, 1 })
-        };
+        private string[] values = new string[] { "д", "и", "о", "р", "е" };
 
         public Lab2Controller(int inputSize)
         {
-            network = new PerceptronNetwork(inputSize, valuesDict.Length);
+            network = new PerceptronNetwork(inputSize, values.Length);
             network.OnLearnStep += HandleLearnStep;
             network.OnLearnEnd += HandleLearnEnd;
             learningCancelToken = new CancellationTokenSource();
@@ -42,13 +31,13 @@ namespace SubLaba1.Controllers
 
         public IEnumerable<string> GetGuessableData()
         {
-            return valuesDict.Select(x => x.Item1);
+            return values;
         }
 
         public TrainDataModel GetSavingModel(IEnumerable<int> pixels, string value)
         {
             int num = 0;
-            while (valuesDict[num].Item1 != value) num++;
+            while (values[num] != value) num++;
             return new TrainDataModel()
             {
                 Inputs = pixels.Select(x => x > 0 ? 1 : -1),
@@ -81,7 +70,7 @@ namespace SubLaba1.Controllers
             var inputs = pixels.Select(x => (double)x);
             var answer = network.Guess(inputs);
             var i = IndexOfClosest(answer, 1);
-            return valuesDict[i].Item1;
+            return values[i];
         }
 
         private IEnumerable<(IEnumerable<double>, IEnumerable<double>)> GetDataByModel(IEnumerable<TrainDataModel> model)
@@ -89,7 +78,7 @@ namespace SubLaba1.Controllers
             var res = new List<(IEnumerable<double>, IEnumerable<double>)>();
             foreach (var m in model)
             {
-                res.Add((m.Inputs.Select(x => (double)x), valuesDict[m.Number].Item2));
+                res.Add((m.Inputs.Select(x => (double)x), AnswerByIndex(m.Number)));
             }
             return res;
         }
@@ -102,6 +91,15 @@ namespace SubLaba1.Controllers
         private void HandleLearnEnd(object? sender, EventArgs e)
         {
             OnLearnEnd?.Invoke(sender, e);
+        }
+
+        private IEnumerable<double> AnswerByIndex(int index)
+        {
+            var size = values.Length;
+            var res = new double[size];
+            for (int i = 0; i < size; i++) res[i] = -1;
+            res[index] = 1;
+            return res;
         }
 
         private int IndexOfClosest(IEnumerable<double> inputs, double value)
