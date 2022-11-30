@@ -99,7 +99,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(80, 520);
+            this.label2.Location = new System.Drawing.Point(65, 522);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 15);
             this.label2.TabIndex = 6;
@@ -267,7 +267,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.MainCanvas);
             this.Name = "MainForm";
-            this.Text = "Обучение по Хэббу";
+            this.Text = "Обучение нейронных сетей";
             ((System.ComponentModel.ISupportInitialize)(this.MainCanvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxIterationsNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LearnFactorNud)).EndInit();

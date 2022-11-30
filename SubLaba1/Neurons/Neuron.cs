@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace SubLaba1.Neurons
+﻿namespace SubLaba1.Neurons
 {
     public abstract class Neuron
     {
@@ -21,6 +17,9 @@ namespace SubLaba1.Neurons
         /// </summary>
         public double Cost { get; set; }
 
+        /// <summary>
+        /// Входной сигнал нейрона, используется для InputNeuron, является временным решением
+        /// </summary>
         public double Input { get; set; }
 
         /// <summary>
@@ -32,17 +31,6 @@ namespace SubLaba1.Neurons
         /// Производная функции активации
         /// </summary>
         public abstract double ActivationDerivative(double x);
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="activation">Функция активации</param>
-        /// <param name="activationDerivative">Производная функции активации</param>
-        /*public Neuron()
-        {
-            Inputs = new List<NeuronBinding>();
-            Outputs = new List<NeuronBinding>();
-        }*/
 
         /// <summary>
         /// Подсчитать сумму входных сигналов
