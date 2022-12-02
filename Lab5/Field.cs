@@ -26,8 +26,9 @@ namespace Lab5
         /// <param name="colorMatrix">Матрица цветов. Размер матрицы определяет размер отрисовываемого поля</param>
         public void Draw(Color[,] colorMatrix)
         {
-            var rows = 10;// colorMatrix.GetLength(0);
-            var cols = 10;// colorMatrix.GetLength(1);
+            _g.Clear(Color.White);
+            var rows = colorMatrix.GetLength(0);
+            var cols = colorMatrix.GetLength(1);
             var a = GetSide(rows, cols);
             var points = GetPointsBySize(rows, cols, a);
             for (int i = 0; i < rows; i++)

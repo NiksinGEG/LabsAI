@@ -15,7 +15,27 @@
             _rnd = new Random();
         }
 
-        public int Weigh()
+        public Chromosome(int rowsCount, int colsCount, int maxValue)
+        {
+            _rnd = new Random();
+            Value = new int[rowsCount, colsCount];
+            for(int i = 0; i < rowsCount; i++)
+                for(int j = 0; j < colsCount; j++)
+                    Value[i, j] = _rnd.Next(maxValue);
+        }
+
+        public int Fitness()
+        {
+            // Макс кол-во соприкасающихся цветов
+            var adjoiningMax = RowsCount * ColsCount * 3;
+            adjoiningMax -= 2 * ((int)Math.Ceiling(ColsCount / 2.0) + RowsCount - 2); // У треугов по краям на 1 меньше соприкосновений
+            adjoiningMax -= 4; // У треугов по углам ещё на одно меньше
+
+            // Чем меньше соприкосновений - тем выше приспособленность
+            return adjoiningMax - Adjoinings();
+        }
+
+        public int Adjoinings()
         {
             var res = 0;
             for (int i = 0; i < RowsCount; i++)
@@ -24,17 +44,17 @@
             return res;
         }
 
-        public Chromosome Cross(Chromosome other, double p)
+        public Chromosome Crossover(Chromosome other, double p)
         {
-            var arr1 = this.ToArray();
-            var arr2 = other.ToArray();
+            if(this.RowsCount != other.RowsCount || this.ColsCount != other.ColsCount)
+                throw new Exception("Хромосомы были разной длины");
 
-            if (arr1.Length != arr2.Length) throw new Exception("Хромосомы были разной длины");
+            var res = new int[RowsCount, ColsCount];
 
-            for (int i = 0; i < arr1.Length; i++)
-                if (_rnd.NextDouble() <= p) arr1[i] = arr2[i];
-
-            return new Chromosome(AsMatrix(arr1, RowsCount, ColsCount));
+            for (int i = 0; i < RowsCount; i++)
+                for (int j = 0; j < ColsCount; j++)
+                    res[i, j] = (_rnd.NextDouble() <= p) ? other.Value[i, j] : Value[i, j];
+            return new Chromosome(res);
         }
 
         public void Mutate()
@@ -49,43 +69,15 @@
             Value[i2, j2] = temp;
         }
 
-        public int[] ToArray()
-        {
-            return AsArray(Value);
-        }
-
         private int WeighOf(int i, int j)
         {
             var val = Value[i, j];
             int res = 0;
 
             if (j > 0 && Value[i, j - 1] == val) res++;
-            if (j < ColsCount && Value[i, j + 1] == val) res++;
+            if (j < ColsCount-1 && Value[i, j + 1] == val) res++;
             if ((i + j) % 2 == 0 && i > 0 && Value[i - 1, j] == val) res++;
-            if ((i + j) % 2 != 0 && i < RowsCount && Value[i + 1, j] == val) res++;
-            return res;
-        }
-
-        private int[] AsArray(int[,] matrix)
-        {
-            var m = matrix.GetLength(0);
-            var n = matrix.GetLength(1);
-
-            var res = new int[m * n];
-            for (int i = 0; i < m; i++)
-                for (int j = 0; j < n; j++)
-                    res[i * n + j] = matrix[i, j];
-            return res;
-        }
-
-        private int[,] AsMatrix(int[] array, int rowsCount, int colsCount)
-        {
-            if (array.Length != rowsCount * colsCount) throw new Exception("Размерности не соответствуют массиву");
-
-            var res = new int[rowsCount, colsCount];
-            for (int i = 0; i < rowsCount; i++)
-                for (int j = 0; j < colsCount; j++)
-                    res[i, j] = array[i * colsCount + j];
+            else if ((i + j) % 2 != 0 && i < RowsCount-1 && Value[i + 1, j] == val) res++;
             return res;
         }
     }
