@@ -6,7 +6,13 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>AppIco.ico</ApplicationIcon>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="AppIco.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="OxyPlot.Core" Version="2.1.0" />

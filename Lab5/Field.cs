@@ -10,7 +10,6 @@ namespace Lab5
 {
     public class Field
     {
-        private Point[,] _points;
         private readonly Control _canvas;
         private readonly Graphics _g;
 
@@ -40,7 +39,8 @@ namespace Lab5
         {
             var points = GetTriangleVertices(p, i, j, a);
             //var pen = new Pen(new SolidBrush(Color.Black), 2);
-            _g.FillClosedCurve(new SolidBrush(c), points);
+            _g.FillPolygon(new SolidBrush(c), points);
+            //_g.FillClosedCurve(new SolidBrush(c), points);
             //_g.DrawLines(pen, points);
         }
 
@@ -50,17 +50,17 @@ namespace Lab5
             res[0] = new Point()
             {
                 X = center.X,
-                Y = center.Y + (int)((((i + j) % 2 == 0) ? 1 : -1) * a / Math.Sqrt(3))
+                Y = center.Y + (int)((((i + j) % 2 == 0) ? 1 : -1) * 2*L(a)) //a / Math.Sqrt(3))
             };
             res[1] = new Point()
             {
                 X = center.X - (a / 2),
-                Y = center.Y - (int)((((i + j) % 2 == 0) ? 1 : -1) * a / (2 * Math.Sqrt(3)))
+                Y = center.Y - (int)((((i + j) % 2 == 0) ? 1 : -1) * L(a)) //a / (2 * Math.Sqrt(3)))
             };
             res[2] = new Point()
             {
                 X = center.X + (a / 2),
-                Y = center.Y - (int)((((i + j) % 2 == 0) ? 1 : -1) * a / (2 * Math.Sqrt(3)))
+                Y = center.Y - (int)((((i + j) % 2 == 0) ? 1 : -1) * L(a))//a / (2 * Math.Sqrt(3)))
             };
             res[3] = res[0];
             return res;
@@ -109,6 +109,11 @@ namespace Lab5
             double h = 3 * l;
             int y = (int)(((i + j) % 2 == 0 ? l : 2 * l) + h * i);
             return new Point(x, y);
+        }
+
+        private int L(int a)
+        {
+            return (int)Math.Ceiling(a / (2 * Math.Sqrt(3)));
         }
     }
 }

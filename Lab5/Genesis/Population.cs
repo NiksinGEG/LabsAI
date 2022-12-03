@@ -56,22 +56,22 @@
             var n = Generation.Count();
             var pairs = new List<(Chromosome, Chromosome)>();
             var totalFitness = Generation.Select(x => x.Fitness()).Sum();
-            var bounds = new List<(int min, int max)>();
+            var bounds = new List<(double min, double max)>();
             foreach (var chromo in Generation)
             {
-                var length = (int)(((double)chromo.Fitness() / (double)totalFitness) * 100);
+                var length = (double)chromo.Fitness() / (double)totalFitness;
                 var newBound = (bounds.LastOrDefault().max, bounds.LastOrDefault().max + length);
                 bounds.Add(newBound);
             }
             var lastMin = bounds.Last().min;
             bounds.Remove(bounds.Last());
-            bounds.Add((lastMin, 100));
+            bounds.Add((lastMin, 1));
 
             for (int i = 0; i < n; i++)
             {
-                var val = _rnd.Next(100);
+                var val = _rnd.NextDouble();
                 var index1 = IndexOfBound(bounds, val);
-                val = _rnd.Next(100);
+                val = _rnd.NextDouble();
                 var index2 = IndexOfBound(bounds, val);
                 if (index2 == index1) index2 = (index2 + 1) % bounds.Count;
                 pairs.Add((Generation.ElementAt(index1), Generation.ElementAt(index2)));
@@ -104,7 +104,7 @@
                 if (_rnd.Next(100) < p) c.Mutate();
         }
 
-        private int IndexOfBound(IEnumerable<(int min, int max)> bounds, int value)
+        private int IndexOfBound(IEnumerable<(double min, double max)> bounds, double value)
         {
             int i = 0;
             foreach (var bound in bounds)

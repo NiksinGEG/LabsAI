@@ -57,6 +57,7 @@
             // mainCanvas
             // 
             this.mainCanvas.BackColor = System.Drawing.Color.White;
+            this.mainCanvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mainCanvas.Location = new System.Drawing.Point(12, 12);
             this.mainCanvas.Name = "mainCanvas";
             this.mainCanvas.Size = new System.Drawing.Size(585, 525);
@@ -65,9 +66,10 @@
             // 
             // solveBtn
             // 
+            this.solveBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.solveBtn.Location = new System.Drawing.Point(603, 280);
             this.solveBtn.Name = "solveBtn";
-            this.solveBtn.Size = new System.Drawing.Size(75, 23);
+            this.solveBtn.Size = new System.Drawing.Size(114, 23);
             this.solveBtn.TabIndex = 1;
             this.solveBtn.Text = "Решить";
             this.solveBtn.UseVisualStyleBackColor = true;
@@ -76,7 +78,7 @@
             // weighsLbl
             // 
             this.weighsLbl.AutoSize = true;
-            this.weighsLbl.Location = new System.Drawing.Point(684, 284);
+            this.weighsLbl.Location = new System.Drawing.Point(723, 284);
             this.weighsLbl.Name = "weighsLbl";
             this.weighsLbl.Size = new System.Drawing.Size(120, 15);
             this.weighsLbl.TabIndex = 2;
@@ -109,18 +111,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(603, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(177, 15);
+            this.label2.Size = new System.Drawing.Size(170, 15);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Треугольничков по вертикали:";
+            this.label2.Text = "Треугольников по вертикали:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(603, 41);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(190, 15);
+            this.label3.Size = new System.Drawing.Size(183, 15);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Треугольничков по горизонтали:";
+            this.label3.Text = "Треугольников по горизонтали:";
             // 
             // label4
             // 
@@ -152,6 +154,11 @@
             // rowCountNud
             // 
             this.rowCountNud.Location = new System.Drawing.Point(799, 10);
+            this.rowCountNud.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             this.rowCountNud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -169,6 +176,11 @@
             // colCountNud
             // 
             this.colCountNud.Location = new System.Drawing.Point(799, 39);
+            this.colCountNud.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             this.colCountNud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -187,7 +199,7 @@
             // 
             this.populationNud.Location = new System.Drawing.Point(799, 91);
             this.populationNud.Maximum = new decimal(new int[] {
-            10000,
+            500,
             0,
             0,
             0});
@@ -200,7 +212,7 @@
             this.populationNud.Size = new System.Drawing.Size(63, 23);
             this.populationNud.TabIndex = 12;
             this.populationNud.Value = new decimal(new int[] {
-            100,
+            250,
             0,
             0,
             0});
@@ -208,6 +220,11 @@
             // crossNud
             // 
             this.crossNud.DecimalPlaces = 2;
+            this.crossNud.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
             this.crossNud.Location = new System.Drawing.Point(799, 120);
             this.crossNud.Maximum = new decimal(new int[] {
             1,
@@ -248,7 +265,7 @@
             // 
             this.maxIterationsNud.Location = new System.Drawing.Point(855, 216);
             this.maxIterationsNud.Maximum = new decimal(new int[] {
-            1000000,
+            2000,
             0,
             0,
             0});
@@ -261,7 +278,7 @@
             this.maxIterationsNud.Size = new System.Drawing.Size(66, 23);
             this.maxIterationsNud.TabIndex = 16;
             this.maxIterationsNud.Value = new decimal(new int[] {
-            50,
+            250,
             0,
             0,
             0});
@@ -270,7 +287,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1255, 549);
+            this.ClientSize = new System.Drawing.Size(1085, 549);
             this.Controls.Add(this.maxIterationsNud);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.mutationNud);
@@ -288,8 +305,9 @@
             this.Controls.Add(this.weighsLbl);
             this.Controls.Add(this.solveBtn);
             this.Controls.Add(this.mainCanvas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ГЕНЕТИЧЕСКИЙ АЛГОРИТМ";
             ((System.ComponentModel.ISupportInitialize)(this.mainCanvas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rowCountNud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.colCountNud)).EndInit();
