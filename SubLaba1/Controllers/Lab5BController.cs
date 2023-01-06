@@ -15,11 +15,7 @@ namespace SubLaba1.Controllers
         private Task? learningTask;
         private CancellationTokenSource learningCancelToken;
 
-        private (string letter, double[] outputs)[] valuesDict = new (string, double[])[]
-        {
-            ("Д", new double[] { 1, 0 }),
-            ("И", new double[] { 0, 1 })
-        };
+        public string[] values = new string[] { "Д", "И" };
 
         public Lab5BController(int inputSize)
         {
@@ -33,13 +29,13 @@ namespace SubLaba1.Controllers
         }
         public IEnumerable<string> GetGuessableData()
         {
-            return valuesDict.Select(x => x.letter);
+            return values;
         }
 
         public TrainDataModel GetSavingModel(IEnumerable<int> pixels, string value)
         {
             int num = 0;
-            while (valuesDict[num].Item1 != value) num++;
+            while (values[num] != value) num++;
             return new TrainDataModel()
             {
                 Inputs = pixels,
@@ -73,7 +69,7 @@ namespace SubLaba1.Controllers
             var inputs = pixels.Select(x => (double)x);
             var answer = network.Output(inputs);
             var i = answer.IndexOf(answer.Max());
-            return valuesDict[i].letter;
+            return values[i];
         }
 
         private IEnumerable<(IEnumerable<double>, IEnumerable<double>)> GetDataByModel(IEnumerable<TrainDataModel> models)
@@ -81,8 +77,15 @@ namespace SubLaba1.Controllers
             var res = new List<(IEnumerable<double>, IEnumerable<double>)>();
             foreach (var m in models)
             {
-                res.Add((m.Inputs.Select(x => (double)x), valuesDict[m.Number].outputs));
+                res.Add((m.Inputs.Select(x => (double)x), OutputsByIndex(m.Number)));
             }
+            return res;
+        }
+
+        private IEnumerable<double> OutputsByIndex(int index)
+        {
+            var res = new double[values.Length];
+            for (int i = 0; i < values.Length; i++) res[i] = i == index ? 1 : 0;
             return res;
         }
 

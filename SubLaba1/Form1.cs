@@ -3,10 +3,12 @@ using SubLaba1.Controllers;
 
 namespace SubLaba1
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IMainForm
     {
         private readonly PictureInput _pictInput;
         private INetworkController controller;
+
+        public PictureInput PictureInput { get => _pictInput; }
 
         public MainForm()
         {
@@ -15,7 +17,7 @@ namespace SubLaba1
             int pictureSize = 8;
             _pictInput = new PictureInput(MainCanvas, pictureSize);
 
-            controller = new Lab2Controller(pictureSize * pictureSize);
+            controller = new HopfieldController(pictureSize * pictureSize, this); //new Lab5BController(pictureSize * pictureSize);
             controller.OnLearnStep += OnLearnStep;
             controller.OnLearnEnd += OnLearnEnd;
 

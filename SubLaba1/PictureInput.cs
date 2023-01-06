@@ -65,7 +65,7 @@
             _g.FillRectangle(b, cellSize.Width * j, cellSize.Height * i, cellSize.Width, cellSize.Height);
         }
 
-        private void HandleClick(object sender, MouseEventArgs e)
+        private void HandleClick(object? sender, MouseEventArgs e)
         {
             var i = IndexByClick(e.X, e.Y);
             Pixels[i.Item1, i.Item2] = Pixels[i.Item1, i.Item2] > 0.5 ? 0 : 1;

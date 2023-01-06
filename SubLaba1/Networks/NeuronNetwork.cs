@@ -34,7 +34,7 @@ namespace SubLaba1.Networks
         public NeuronNetwork AddStraightLayer(int size)
         {
             var neurons = new List<Neuron>();
-            var last = Layers?.LastOrDefault()?.ToList();
+            var last = Layers.LastOrDefault()?.ToList();
             for(int i = 0; i < size; i++)
             {
                 if (last == null)
