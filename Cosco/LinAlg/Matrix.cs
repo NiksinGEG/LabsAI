@@ -209,7 +209,7 @@
         /// </summary>
         public static Matrix operator *(Matrix a, Matrix b)
         {
-            if (a.N != b.M) throw new Exception($"Неверное количество строк/столбцов матриц. Строк в первой было {a.M}, столбцов во второй было {b.N}");
+            if (a.N != b.M) throw new Exception($"Неверное количество строк/столбцов матриц. Столбцов в первой было {a.N}, строк во второй было {b.M}");
 
             var res = new Matrix(a.M, b.N);
             res.ForIJ((i, j) =>
@@ -290,5 +290,19 @@
         public override bool Equals(object? obj) => base.Equals(obj);
 
         public override int GetHashCode() => base.GetHashCode();
+
+        public double[] ToArray()
+        {
+            var res = new double[M * N];
+            ForIJ((i, j) => res[i * N + j] = data[i, j]);
+            return res;
+        }
+
+        public List<double> ToList()
+        {
+            var res = new List<double>();
+            ForIJ((i, j) => res.Add(data[i, j]));
+            return res;
+        }
     }
 }
